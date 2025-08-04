@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Skin Lesion AI Analyzer</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <div class="header-content">
+                <div class="logo">
+                    <i class="fas fa-microscope"></i>
+                    <h1>Skin Lesion AI</h1>
+                </div>
+                <p class="subtitle">Advanced dermatological analysis powered by artificial intelligence</p>
+            </div>
+        </header>
+
+        <main class="main">
+            <div class="upload-section">
+                <div class="upload-card">
+                    <div class="upload-area" id="uploadArea">
+                        <div class="upload-content" id="uploadContent">
+                            <i class="fas fa-cloud-upload-alt upload-icon"></i>
+                            <h3>Upload Skin Lesion Image</h3>
+                            <p>Drag and drop your image here or click to browse</p>
+                            <div class="supported-formats">
+                                <span>Supported formats: JPG, JPEG, PNG</span>
+                            </div>
+                        </div>
+                        <input type="file" id="imageInput" accept="image/*" hidden>
+                    </div>
+                    
+                    <div class="image-preview" id="imagePreview" style="display: none;">
+                        <img id="previewImg" alt="Preview">
+                        <div class="image-actions">
+                            <button class="btn btn-secondary" id="changeImage">
+                                <i class="fas fa-edit"></i> Change Image
+                            </button>
+                            <button class="btn btn-primary" id="analyzeBtn">
+                                <i class="fas fa-search"></i> Analyze Image
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="results-section" id="resultsSection" style="display: none;">
+                <div class="results-card">
+                    <div class="results-header">
+                        <i class="fas fa-chart-line"></i>
+                        <h3>Analysis Results</h3>
+                    </div>
+                    
+                    <div class="results-content">
+                        <div class="prediction-main">
+                            <div class="prediction-label">Predicted Diagnosis</div>
+                            <div class="prediction-value" id="predictionValue">-</div>
+                        </div>
+                        
+                        <div class="confidence-section">
+                            <div class="confidence-label">Confidence Level</div>
+                            <div class="confidence-bar">
+                                <div class="confidence-fill" id="confidenceFill"></div>
+                                <span class="confidence-text" id="confidenceText">0%</span>
+                            </div>
+                        </div>
+                        
+                        <div class="disclaimer">
+                            <i class="fas fa-exclamation-triangle"></i>
+                            <p><strong>Medical Disclaimer:</strong> This AI analysis is for educational purposes only and should not replace professional medical diagnosis. Please consult a dermatologist for proper medical evaluation.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="loading-overlay" id="loadingOverlay" style="display: none;">
+                <div class="loading-spinner">
+                    <div class="spinner"></div>
+                    <p>Analyzing your image...</p>
+                </div>
+            </div>
+        </main>
+
+        <section class="info-section">
+            <div class="info-grid">
+                <div class="info-card">
+                    <i class="fas fa-brain"></i>
+                    <h4>AI-Powered Analysis</h4>
+                    <p>Advanced EfficientNet model trained on thousands of dermatological images</p>
+                </div>
+                <div class="info-card">
+                    <i class="fas fa-clock"></i>
+                    <h4>Instant Results</h4>
+                    <p>Get analysis results in seconds with detailed confidence metrics</p>
+                </div>
+                <div class="info-card">
+                    <i class="fas fa-shield-alt"></i>
+                    <h4>Privacy Protected</h4>
+                    <p>Your images are processed locally and not stored on our servers</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="lesion-types">
+            <h3>Detectable Lesion Types</h3>
+            <div class="types-grid">
+                <div class="type-card">
+                    <h5>Melanoma (MEL)</h5>
+                    <p>Most serious form of skin cancer</p>
+                </div>
+                <div class="type-card">
+                    <h5>Melanocytic Nevus (NV)</h5>
+                    <p>Common benign skin lesions (moles)</p>
+                </div>
+                <div class="type-card">
+                    <h5>Basal Cell Carcinoma (BCC)</h5>
+                    <p>Most common type of skin cancer</p>
+                </div>
+                <div class="type-card">
+                    <h5>Actinic Keratosis (AKIEC)</h5>
+                    <p>Pre-cancerous skin condition</p>
+                </div>
+                <div class="type-card">
+                    <h5>Benign Keratosis (BKL)</h5>
+                    <p>Non-cancerous skin growths</p>
+                </div>
+                <div class="type-card">
+                    <h5>Dermatofibroma (DF)</h5>
+                    <p>Benign skin nodules</p>
+                </div>
+                <div class="type-card">
+                    <h5>Vascular Lesion (VASC)</h5>
+                    <p>Blood vessel-related skin lesions</p>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+</body>
+</html>

@@ -1,0 +1,339 @@
+class SkinLesionAnalyzer {
+    constructor() {
+        this.initializeElements();
+        this.attachEventListeners();
+        this.selectedImage = null;
+    }
+
+    initializeElements() {
+        this.uploadArea = document.getElementById('uploadArea');
+        this.uploadContent = document.getElementById('uploadContent');
+        this.imageInput = document.getElementById('imageInput');
+        this.imagePreview = document.getElementById('imagePreview');
+        this.previewImg = document.getElementById('previewImg');
+        this.changeImageBtn = document.getElementById('changeImage');
+        this.analyzeBtn = document.getElementById('analyzeBtn');
+        this.resultsSection = document.getElementById('resultsSection');
+        this.loadingOverlay = document.getElementById('loadingOverlay');
+        this.predictionValue = document.getElementById('predictionValue');
+        this.confidenceFill = document.getElementById('confidenceFill');
+        this.confidenceText = document.getElementById('confidenceText');
+    }
+
+    attachEventListeners() {
+        // File input change
+        this.imageInput.addEventListener('change', (e) => this.handleFileSelect(e));
+        
+        // Upload area click
+        this.uploadArea.addEventListener('click', () => {
+            if (!this.selectedImage) {
+                this.imageInput.click();
+            }
+        });
+
+        // Drag and drop functionality
+        this.uploadArea.addEventListener('dragover', (e) => this.handleDragOver(e));
+        this.uploadArea.addEventListener('dragleave', (e) => this.handleDragLeave(e));
+        this.uploadArea.addEventListener('drop', (e) => this.handleDrop(e));
+
+        // Button events
+        this.changeImageBtn.addEventListener('click', () => this.resetUpload());
+        this.analyzeBtn.addEventListener('click', () => this.analyzeImage());
+
+        // Prevent default drag behaviors on document
+        document.addEventListener('dragover', (e) => e.preventDefault());
+        document.addEventListener('drop', (e) => e.preventDefault());
+    }
+
+    handleDragOver(e) {
+        e.preventDefault();
+        this.uploadArea.classList.add('dragover');
+    }
+
+    handleDragLeave(e) {
+        e.preventDefault();
+        this.uploadArea.classList.remove('dragover');
+    }
+
+    handleDrop(e) {
+        e.preventDefault();
+        this.uploadArea.classList.remove('dragover');
+        
+        const files = e.dataTransfer.files;
+        if (files.length > 0) {
+            this.processFile(files[0]);
+        }
+    }
+
+    handleFileSelect(e) {
+        const file = e.target.files[0];
+        if (file) {
+            this.processFile(file);
+        }
+    }
+
+    processFile(file) {
+        // Validate file type
+        const validTypes = ['image/jpeg', 'image/jpg', 'image/png'];
+        if (!validTypes.includes(file.type)) {
+            this.showError('Please select a valid image file (JPG, JPEG, or PNG)');
+            return;
+        }
+
+        // Validate file size (max 10MB)
+        const maxSize = 10 * 1024 * 1024; // 10MB
+        if (file.size > maxSize) {
+            this.showError('File size must be less than 10MB');
+            return;
+        }
+
+        this.selectedImage = file;
+        this.displayImagePreview(file);
+    }
+
+    displayImagePreview(file) {
+        const reader = new FileReader();
+        reader.onload = (e) => {
+            this.previewImg.src = e.target.result;
+            this.uploadContent.style.display = 'none';
+            this.imagePreview.style.display = 'block';
+            this.hideResults();
+        };
+        reader.readAsDataURL(file);
+    }
+
+    resetUpload() {
+        this.selectedImage = null;
+        this.imageInput.value = '';
+        this.uploadContent.style.display = 'block';
+        this.imagePreview.style.display = 'none';
+        this.hideResults();
+    }
+
+    async analyzeImage() {
+        if (!this.selectedImage) {
+            this.showError('Please select an image first');
+            return;
+        }
+
+        this.showLoading();
+
+        try {
+            // Convert image to base64
+            const base64Image = await this.fileToBase64(this.selectedImage);
+            
+            // Remove the data URL prefix
+            const base64Data = base64Image.split(',')[1];
+
+            // Send to Flask API
+            const response = await fetch('/analyze', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    image: base64Data
+                })
+            });
+
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+
+            const result = await response.json();
+            
+            if (result.error) {
+                throw new Error(result.error);
+            }
+
+            this.displayResults(result);
+
+        } catch (error) {
+            console.error('Analysis error:', error);
+            this.showError(`Analysis failed: ${error.message}`);
+        } finally {
+            this.hideLoading();
+        }
+    }
+
+    fileToBase64(file) {
+        return new Promise((resolve, reject) => {
+            const reader = new FileReader();
+            reader.onload = () => resolve(reader.result);
+            reader.onerror = reject;
+            reader.readAsDataURL(file);
+        });
+    }
+
+    displayResults(result) {
+        // Update prediction
+        this.predictionValue.textContent = result.prediction || result.class_name;
+
+        // Update confidence
+        const confidence = Math.round((result.confidence || 0) * 100);
+        this.confidenceText.textContent = `${confidence}%`;
+        this.confidenceFill.style.width = `${confidence}%`;
+
+        // Set confidence bar color based on value
+        if (confidence >= 80) {
+            this.confidenceFill.style.background = 'linear-gradient(90deg, #10b981 0%, #059669 100%)';
+        } else if (confidence >= 60) {
+            this.confidenceFill.style.background = 'linear-gradient(90deg, #f59e0b 0%, #d97706 100%)';
+        } else {
+            this.confidenceFill.style.background = 'linear-gradient(90deg, #ef4444 0%, #dc2626 100%)';
+        }
+
+        // Show results with animation
+        this.resultsSection.style.display = 'block';
+        this.resultsSection.classList.add('show');
+        
+        // Scroll to results
+        this.resultsSection.scrollIntoView({ 
+            behavior: 'smooth', 
+            block: 'start' 
+        });
+    }
+
+    hideResults() {
+        this.resultsSection.style.display = 'none';
+        this.resultsSection.classList.remove('show');
+    }
+
+    showLoading() {
+        this.loadingOverlay.style.display = 'flex';
+        this.analyzeBtn.disabled = true;
+    }
+
+    hideLoading() {
+        this.loadingOverlay.style.display = 'none';
+        this.analyzeBtn.disabled = false;
+    }
+
+    showError(message) {
+        // Create error notification
+        const errorDiv = document.createElement('div');
+        errorDiv.className = 'error-notification';
+        errorDiv.innerHTML = `
+            <div class="error-content">
+                <i class="fas fa-exclamation-circle"></i>
+                <span>${message}</span>
+                <button class="error-close" onclick="this.parentElement.parentElement.remove()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+        `;
+
+        // Add error styles if not already present
+        if (!document.querySelector('.error-notification-styles')) {
+            const style = document.createElement('style');
+            style.className = 'error-notification-styles';
+            style.textContent = `
+                .error-notification {
+                    position: fixed;
+                    top: 20px;
+                    right: 20px;
+                    background: #fef2f2;
+                    border: 1px solid #fecaca;
+                    border-radius: 8px;
+                    padding: 1rem;
+                    box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1);
+                    z-index: 1001;
+                    animation: slideInRight 0.3s ease-out;
+                    max-width: 400px;
+                }
+                
+                .error-content {
+                    display: flex;
+                    align-items: center;
+                    gap: 0.75rem;
+                    color: #991b1b;
+                }
+                
+                .error-content i:first-child {
+                    color: #dc2626;
+                    flex-shrink: 0;
+                }
+                
+                .error-close {
+                    background: none;
+                    border: none;
+                    color: #991b1b;
+                    cursor: pointer;
+                    padding: 0.25rem;
+                    border-radius: 4px;
+                    margin-left: auto;
+                }
+                
+                .error-close:hover {
+                    background: #fecaca;
+                }
+                
+                @keyframes slideInRight {
+                    from {
+                        transform: translateX(100%);
+                        opacity: 0;
+                    }
+                    to {
+                        transform: translateX(0);
+                        opacity: 1;
+                    }
+                }
+            `;
+            document.head.appendChild(style);
+        }
+
+        document.body.appendChild(errorDiv);
+
+        // Auto remove after 5 seconds
+        setTimeout(() => {
+            if (errorDiv.parentElement) {
+                errorDiv.remove();
+            }
+        }, 5000);
+    }
+}
+
+// Initialize the application when DOM is loaded
+document.addEventListener('DOMContentLoaded', () => {
+    new SkinLesionAnalyzer();
+});
+
+// Add smooth scrolling for all anchor links
+document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+    anchor.addEventListener('click', function (e) {
+        e.preventDefault();
+        const target = document.querySelector(this.getAttribute('href'));
+        if (target) {
+            target.scrollIntoView({
+                behavior: 'smooth',
+                block: 'start'
+            });
+        }
+    });
+});
+
+// Add intersection observer for animation on scroll
+const observerOptions = {
+    threshold: 0.1,
+    rootMargin: '0px 0px -50px 0px'
+};
+
+const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+        if (entry.isIntersecting) {
+            entry.target.style.opacity = '1';
+            entry.target.style.transform = 'translateY(0)';
+        }
+    });
+}, observerOptions);
+
+// Observe elements for scroll animations
+document.addEventListener('DOMContentLoaded', () => {
+    const animateElements = document.querySelectorAll('.info-card, .type-card');
+    animateElements.forEach(el => {
+        el.style.opacity = '0';
+        el.style.transform = 'translateY(20px)';
+        el.style.transition = 'opacity 0.6s ease-out, transform 0.6s ease-out';
+        observer.observe(el);
+    });
+});
