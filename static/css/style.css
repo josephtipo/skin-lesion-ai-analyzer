@@ -440,6 +440,23 @@ body {
     color: var(--text-primary);
 }
 
+.lesion-types-results {
+    background: var(--surface);
+    padding: 3rem;
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow);
+    margin-bottom: 3rem;
+    margin-top: 2rem;
+}
+
+.lesion-types-results h3 {
+    text-align: center;
+    font-size: 2rem;
+    font-weight: 700;
+    margin-bottom: 2rem;
+    color: var(--text-primary);
+}
+
 .types-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
@@ -519,7 +536,8 @@ body {
         gap: 1rem;
     }
     
-    .lesion-types {
+    .lesion-types,
+    .lesion-types-results {
         padding: 2rem 1rem;
     }
     

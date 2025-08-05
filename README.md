@@ -61,7 +61,7 @@ gunicorn -w 4 -b 0.0.0.0:5000 app:app
 .
 ├── app.py                 # Main Flask application
 ├── requirements.txt       # Python dependencies
-├── EfficientNet_EfficientNet-FocalLoss-AdamW-LRScheduler-M1Mac_big_data_20_20250805_1428_best.pth  # Trained AI model
+├── model.pth             # Trained AI model
 ├── templates/            # HTML templates
 │   └── index.html
 ├── static/               # Static assets (CSS, JS)

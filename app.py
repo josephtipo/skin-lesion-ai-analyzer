@@ -251,7 +251,7 @@ CORS(app)
 
 # Global model variable
 model = None
-MODEL_PATH = "EfficientNet_EfficientNet-FocalLoss-AdamW-LRScheduler-M1Mac_big_data_20_20250805_1428_best.pth"
+MODEL_PATH = "model.pth"
 
 @app.route('/')
 def index():

@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Skin Lesion AI Analyzer</title>
+    <!-- Cache buster for layout update -->
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
@@ -16,7 +17,7 @@
                     <i class="fas fa-microscope"></i>
                     <h1>Skin Lesion AI</h1>
                 </div>
-                <p class="subtitle">Advanced dermatological analysis powered by artificial intelligence</p>
+                <p class="subtitle">Advanced skin lesion analysis powered by a custom‑trained AI model</p>
             </div>
         </header>
 
@@ -84,27 +85,41 @@
                     <p>Analyzing your image...</p>
                 </div>
             </div>
-        </main>
-
-        <section class="info-section">
-            <div class="info-grid">
-                <div class="info-card">
-                    <i class="fas fa-brain"></i>
-                    <h4>AI-Powered Analysis</h4>
-                    <p>Advanced EfficientNet model trained on thousands of dermatological images</p>
-                </div>
-                <div class="info-card">
-                    <i class="fas fa-clock"></i>
-                    <h4>Instant Results</h4>
-                    <p>Get analysis results in seconds with detailed confidence metrics</p>
-                </div>
-                <div class="info-card">
-                    <i class="fas fa-shield-alt"></i>
-                    <h4>Privacy Protected</h4>
-                    <p>Your images are processed locally and not stored on our servers</p>
+            
+            <div class="lesion-types-results" id="lesionTypesResults" style="display: none;">
+                <h3>Detectable Lesion Types</h3>
+                <div class="types-grid">
+                    <div class="type-card">
+                        <h5>Melanoma (MEL)</h5>
+                        <p>Most serious form of skin cancer</p>
+                    </div>
+                    <div class="type-card">
+                        <h5>Melanocytic Nevus (NV)</h5>
+                        <p>Common benign skin lesions (moles)</p>
+                    </div>
+                    <div class="type-card">
+                        <h5>Basal Cell Carcinoma (BCC)</h5>
+                        <p>Most common type of skin cancer</p>
+                    </div>
+                    <div class="type-card">
+                        <h5>Actinic Keratosis (AKIEC)</h5>
+                        <p>Pre-cancerous skin condition</p>
+                    </div>
+                    <div class="type-card">
+                        <h5>Benign Keratosis (BKL)</h5>
+                        <p>Non-cancerous skin growths</p>
+                    </div>
+                    <div class="type-card">
+                        <h5>Dermatofibroma (DF)</h5>
+                        <p>Benign skin nodules</p>
+                    </div>
+                    <div class="type-card">
+                        <h5>Vascular Lesion (VASC)</h5>
+                        <p>Blood vessel-related skin lesions</p>
+                    </div>
                 </div>
             </div>
-        </section>
+        </main>
 
         <section class="lesion-types">
             <h3>Detectable Lesion Types</h3>
@@ -136,6 +151,26 @@
                 <div class="type-card">
                     <h5>Vascular Lesion (VASC)</h5>
                     <p>Blood vessel-related skin lesions</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="info-section">
+            <div class="info-grid">
+                <div class="info-card">
+                    <i class="fas fa-brain"></i>
+                    <h4>AI-Powered Analysis</h4>
+                    <p>Advanced EfficientNet model trained on thousands of dermatological images</p>
+                </div>
+                <div class="info-card">
+                    <i class="fas fa-clock"></i>
+                    <h4>Instant Results</h4>
+                    <p>Get analysis results in seconds with detailed confidence metrics</p>
+                </div>
+                <div class="info-card">
+                    <i class="fas fa-shield-alt"></i>
+                    <h4>Privacy Protected</h4>
+                    <p>Your images are processed locally and not stored on our servers</p>
                 </div>
             </div>
         </section>
