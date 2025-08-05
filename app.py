@@ -71,11 +71,7 @@ def validate_lesion_image(image):
         if is_solid_color(rgb_img):
             return False, "Image appears to be a solid color or screenshot"
         
-        # 2. Check for skin-like colors
-        if not has_skin_like_colors(rgb_img):
-            return False, "Image doesn't contain skin-like colors"
-        
-        # 3. Check image quality and content
+        # 2. Check image quality and content
         if not is_photographic_quality(rgb_img):
             return False, "Image appears to be low quality or non-photographic"
         
