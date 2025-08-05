@@ -136,14 +136,16 @@ class SkinLesionAnalyzer {
                 })
             });
 
-            if (!response.ok) {
-                throw new Error(`HTTP error! status: ${response.status}`);
-            }
-
             const result = await response.json();
             
-            if (result.error) {
-                throw new Error(result.error);
+            if (!response.ok || result.error) {
+                // Handle invalid image errors specially
+                if (result.type === 'invalid_image') {
+                    this.showInvalidImageError(result.error, result.message);
+                    return;
+                } else {
+                    throw new Error(result.error || `HTTP error! status: ${response.status}`);
+                }
             }
 
             this.displayResults(result);
@@ -207,6 +209,101 @@ class SkinLesionAnalyzer {
     hideLoading() {
         this.loadingOverlay.style.display = 'none';
         this.analyzeBtn.disabled = false;
+    }
+
+    showInvalidImageError(title, message) {
+        // Create invalid image notification with different styling
+        const errorDiv = document.createElement('div');
+        errorDiv.className = 'invalid-image-notification';
+        errorDiv.innerHTML = `
+            <div class="invalid-image-content">
+                <i class="fas fa-image"></i>
+                <div class="invalid-image-text">
+                    <h4>${title}</h4>
+                    <p>${message}</p>
+                    <small>Please upload a clear photo of a skin lesion for analysis.</small>
+                </div>
+                <button class="invalid-image-close" onclick="this.parentElement.parentElement.remove()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+        `;
+
+        // Add invalid image styles if not already present
+        if (!document.querySelector('.invalid-image-notification-styles')) {
+            const style = document.createElement('style');
+            style.className = 'invalid-image-notification-styles';
+            style.textContent = `
+                .invalid-image-notification {
+                    position: fixed;
+                    top: 20px;
+                    right: 20px;
+                    background: #fef3c7;
+                    border: 1px solid #f59e0b;
+                    border-radius: 8px;
+                    padding: 1.25rem;
+                    box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1);
+                    z-index: 1001;
+                    animation: slideInRight 0.3s ease-out;
+                    max-width: 450px;
+                }
+                
+                .invalid-image-content {
+                    display: flex;
+                    align-items: flex-start;
+                    gap: 1rem;
+                    color: #92400e;
+                }
+                
+                .invalid-image-content i:first-child {
+                    color: #f59e0b;
+                    flex-shrink: 0;
+                    font-size: 1.25rem;
+                    margin-top: 0.125rem;
+                }
+                
+                .invalid-image-text h4 {
+                    margin: 0 0 0.5rem 0;
+                    font-weight: 600;
+                    color: #92400e;
+                }
+                
+                .invalid-image-text p {
+                    margin: 0 0 0.5rem 0;
+                    color: #92400e;
+                }
+                
+                .invalid-image-text small {
+                    color: #a16207;
+                    font-style: italic;
+                }
+                
+                .invalid-image-close {
+                    background: none;
+                    border: none;
+                    color: #92400e;
+                    cursor: pointer;
+                    padding: 0.25rem;
+                    border-radius: 4px;
+                    margin-left: auto;
+                    flex-shrink: 0;
+                }
+                
+                .invalid-image-close:hover {
+                    background: #fbbf24;
+                }
+            `;
+            document.head.appendChild(style);
+        }
+
+        document.body.appendChild(errorDiv);
+
+        // Auto remove after 8 seconds (longer for invalid image)
+        setTimeout(() => {
+            if (errorDiv.parentElement) {
+                errorDiv.remove();
+            }
+        }, 8000);
     }
 
     showError(message) {

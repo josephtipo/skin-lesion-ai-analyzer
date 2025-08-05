@@ -16,6 +16,8 @@ except ImportError:
     print("Warning: pillow-heif not available. HEIC format not supported.")
 
 from torchvision.models import efficientnet_b0
+import numpy as np
+import cv2
 
 # Class names
 CLASS_NAMES = ["MEL", "NV", "BCC", "AKIEC", "BKL", "DF", "VASC"]
@@ -47,6 +49,115 @@ def load_model(model_path):
     model.eval()
     return model
 
+def validate_lesion_image(image):
+    """Validate if the image is likely a skin lesion image"""
+    try:
+        # Convert PIL image to numpy array
+        img_array = np.array(image)
+        
+        # Check if image is valid
+        if img_array.size == 0:
+            return False, "Empty image"
+            
+        # Convert to RGB if needed
+        if len(img_array.shape) == 3 and img_array.shape[2] == 3:
+            rgb_img = img_array
+        elif len(img_array.shape) == 3 and img_array.shape[2] == 4:
+            rgb_img = img_array[:, :, :3]  # Remove alpha channel
+        else:
+            return False, "Invalid image format"
+        
+        # 1. Check for solid colors or very low complexity
+        if is_solid_color(rgb_img):
+            return False, "Image appears to be a solid color or screenshot"
+        
+        # 2. Check for skin-like colors
+        if not has_skin_like_colors(rgb_img):
+            return False, "Image doesn't contain skin-like colors"
+        
+        # 3. Check image quality and content
+        if not is_photographic_quality(rgb_img):
+            return False, "Image appears to be low quality or non-photographic"
+        
+        return True, "Valid"
+        
+    except Exception as e:
+        return False, f"Validation error: {str(e)}"
+
+def is_solid_color(img_array):
+    """Check if image is mostly solid color or very low complexity"""
+    # Calculate color variance
+    variance = np.var(img_array)
+    
+    # If variance is very low, it's likely a solid color
+    if variance < 100:
+        return True
+    
+    # Check for text-like patterns (high contrast edges)
+    gray = cv2.cvtColor(img_array, cv2.COLOR_RGB2GRAY)
+    edges = cv2.Canny(gray, 100, 200)
+    edge_ratio = np.sum(edges > 0) / edges.size
+    
+    # If too many edges, might be text or diagram
+    if edge_ratio > 0.15:
+        return True
+        
+    return False
+
+def has_skin_like_colors(img_array):
+    """Check if image contains skin-like colors"""
+    # Convert to HSV for better skin detection
+    hsv_img = cv2.cvtColor(img_array, cv2.COLOR_RGB2HSV)
+    
+    # Define skin color ranges in HSV
+    # Range 1: Light skin tones
+    lower_skin1 = np.array([0, 20, 70])
+    upper_skin1 = np.array([20, 255, 255])
+    
+    # Range 2: Medium skin tones  
+    lower_skin2 = np.array([0, 40, 50])
+    upper_skin2 = np.array([25, 180, 230])
+    
+    # Create masks for skin color ranges
+    mask1 = cv2.inRange(hsv_img, lower_skin1, upper_skin1)
+    mask2 = cv2.inRange(hsv_img, lower_skin2, upper_skin2)
+    
+    # Combine masks
+    skin_mask = cv2.bitwise_or(mask1, mask2)
+    
+    # Calculate percentage of skin-like pixels
+    skin_ratio = np.sum(skin_mask > 0) / skin_mask.size
+    
+    # Require at least 15% skin-like colors
+    return skin_ratio > 0.15
+
+def is_photographic_quality(img_array):
+    """Check if image appears to be a photograph"""
+    # Convert to grayscale
+    gray = cv2.cvtColor(img_array, cv2.COLOR_RGB2GRAY)
+    
+    # Check image size (too small might not be a proper photo)
+    height, width = gray.shape
+    if height < 50 or width < 50:
+        return False
+    
+    # Check for blur (too blurry images)
+    laplacian_var = cv2.Laplacian(gray, cv2.CV_64F).var()
+    if laplacian_var < 10:  # Very blurry
+        return False
+    
+    # Check for excessive noise or compression artifacts
+    # Calculate local standard deviation
+    kernel = np.ones((5,5), np.float32) / 25
+    smooth = cv2.filter2D(gray.astype(np.float32), -1, kernel)
+    noise = np.abs(gray.astype(np.float32) - smooth)
+    noise_level = np.mean(noise)
+    
+    if noise_level > 50:  # Too noisy
+        return False
+        
+    return True
+
 def predict_image(image, model):
     """Make prediction on the input image"""
     img = preprocess(image).unsqueeze(0)  # Add batch dim
@@ -55,7 +166,7 @@ def predict_image(image, model):
         probabilities = torch.softmax(outputs, dim=1)
         confidence, pred = torch.max(probabilities, 1)
     short_code = CLASS_NAMES[pred.item()]
-    return CLASS_NAME_MAP[short_code], confidence.item()
+    return CLASS_NAME_MAP[short_code], confidence.item(), probabilities[0]
 
 # Flask app initialization
 app = Flask(__name__)
@@ -115,12 +226,30 @@ def analyze():
             if image.mode != 'RGB':
                 image = image.convert('RGB')
             
+            # Validate if image is lesion-related
+            is_valid, validation_message = validate_lesion_image(image)
+            if not is_valid:
+                return jsonify({
+                    'error': 'Invalid image for lesion analysis',
+                    'message': validation_message,
+                    'type': 'invalid_image'
+                }), 400
+            
             # Make prediction
-            prediction, confidence = predict_image(image, model)
+            prediction, confidence, probabilities = predict_image(image, model)
+            
+            # Additional confidence-based validation
+            max_confidence = float(confidence)
+            if max_confidence < 0.3:  # Very low confidence across all classes
+                return jsonify({
+                    'error': 'Image does not appear to contain a recognizable skin lesion',
+                    'message': 'Please upload a clear image of a skin lesion',
+                    'type': 'invalid_image'
+                }), 400
             
             return jsonify({
                 'prediction': prediction,
-                'confidence': float(confidence),
+                'confidence': max_confidence,
                 'class_name': prediction,
                 'status': 'success'
             })
