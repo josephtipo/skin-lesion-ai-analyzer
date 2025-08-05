@@ -151,17 +151,24 @@ if __name__ == '__main__':
     print(f"Model exists: {os.path.exists(MODEL_PATH)}")
     
     # Get port from environment variable (for production)
-    port = int(os.environ.get('PORT', 8080))
+    port = int(os.environ.get('PORT', 5000))
     
     # Try to load model at startup for faster first prediction
     try:
         if os.path.exists(MODEL_PATH):
+            print("Found model file, loading...")
             model = load_model(MODEL_PATH)
             print("Model pre-loaded successfully!")
         else:
-            print("Warning: Model file not found. Will attempt to load on first prediction.")
+            print("Warning: Model file not found. App will start but predictions will fail.")
+            print("Please upload model.pth to the root directory.")
     except Exception as e:
         print(f"Warning: Could not pre-load model: {e}")
+        print("App will start but predictions may fail.")
     
     print(f"Starting Flask server on port {port}")
-    app.run(host='0.0.0.0', port=port, debug=False)
+    try:
+        app.run(host='0.0.0.0', port=port, debug=False)
+    except Exception as e:
+        print(f"Failed to start server: {e}")
+        print("App is in recovery mode")
