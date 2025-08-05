@@ -80,17 +80,31 @@ def analyze():
                 return jsonify({'error': 'Model file not found'}), 500
             model = load_model(MODEL_PATH)
         
-        # Get image from request
-        if 'image' not in request.files:
+        # Handle both form file upload and base64 JSON
+        image = None
+        
+        # Check if it's a form file upload
+        if 'image' in request.files:
+            image_file = request.files['image']
+            if image_file.filename == '':
+                return jsonify({'error': 'No image selected'}), 400
+            image = Image.open(image_file.stream)
+        
+        # Check if it's a JSON request with base64 image
+        elif request.is_json and 'image' in request.json:
+            try:
+                import base64
+                base64_data = request.json['image']
+                image_data = base64.b64decode(base64_data)
+                image = Image.open(io.BytesIO(image_data))
+            except Exception as e:
+                return jsonify({'error': 'Invalid base64 image data'}), 400
+        
+        else:
             return jsonify({'error': 'No image provided'}), 400
-            
-        image_file = request.files['image']
-        if image_file.filename == '':
-            return jsonify({'error': 'No image selected'}), 400
         
         # Process the image
         try:
-            image = Image.open(image_file.stream)
             if image.mode != 'RGB':
                 image = image.convert('RGB')
             
@@ -137,7 +151,7 @@ if __name__ == '__main__':
     print(f"Model exists: {os.path.exists(MODEL_PATH)}")
     
     # Get port from environment variable (for production)
-    port = int(os.environ.get('PORT', 5000))
+    port = int(os.environ.get('PORT', 8080))
     
     # Try to load model at startup for faster first prediction
     try:
