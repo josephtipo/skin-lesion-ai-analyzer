@@ -391,8 +391,110 @@ class SkinLesionAnalyzer {
     }
 }
 
+// Mobile device detection and optimization
+function detectMobileDevice() {
+    const userAgent = navigator.userAgent;
+    const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(userAgent);
+    const isTouch = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+    const screenWidth = window.innerWidth;
+    
+    return {
+        isMobile: isMobile || screenWidth <= 768,
+        isTouch: isTouch,
+        isIOS: /iPad|iPhone|iPod/.test(userAgent),
+        isAndroid: /Android/.test(userAgent),
+        screenWidth: screenWidth,
+        screenHeight: window.innerHeight,
+        devicePixelRatio: window.devicePixelRatio || 1
+    };
+}
+
+function optimizeForMobile() {
+    const device = detectMobileDevice();
+    const body = document.body;
+    
+    if (device.isMobile) {
+        body.classList.add('mobile-optimized');
+        
+        // Add iOS specific optimizations
+        if (device.isIOS) {
+            body.classList.add('ios-device');
+            // Prevent zoom on input focus
+            const inputs = document.querySelectorAll('input, select, textarea');
+            inputs.forEach(input => {
+                input.addEventListener('focus', () => {
+                    document.querySelector('meta[name=viewport]').setAttribute(
+                        'content', 'width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no'
+                    );
+                });
+                input.addEventListener('blur', () => {
+                    document.querySelector('meta[name=viewport]').setAttribute(
+                        'content', 'width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no'
+                    );
+                });
+            });
+        }
+        
+        // Add Android specific optimizations
+        if (device.isAndroid) {
+            body.classList.add('android-device');
+        }
+        
+        // Optimize upload area for mobile
+        const uploadArea = document.getElementById('uploadArea');
+        if (uploadArea && device.isTouch) {
+            uploadArea.style.cursor = 'pointer';
+            // Add haptic feedback for touch devices
+            uploadArea.addEventListener('touchstart', () => {
+                if (navigator.vibrate) {
+                    navigator.vibrate(50);
+                }
+            });
+        }
+        
+        // Optimize scroll behavior for mobile
+        if (device.screenWidth <= 480) {
+            // Smooth scroll polyfill for older browsers
+            const smoothScroll = (target) => {
+                target.scrollIntoView({
+                    behavior: 'smooth',
+                    block: 'start',
+                    inline: 'nearest'
+                });
+            };
+            
+            // Override default scroll behavior
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    const target = document.querySelector(this.getAttribute('href'));
+                    if (target) {
+                        smoothScroll(target);
+                    }
+                });
+            });
+        }
+        
+        // Add mobile-specific upload hints
+        const uploadContent = document.getElementById('uploadContent');
+        if (uploadContent && device.isTouch) {
+            const originalHTML = uploadContent.innerHTML;
+            uploadContent.innerHTML = originalHTML.replace(
+                'Drag and drop your image here or click to browse',
+                'Tap to select an image from your device'
+            );
+        }
+    }
+    
+    console.log('Device info:', device);
+}
+
 // Initialize the application when DOM is loaded
 document.addEventListener('DOMContentLoaded', () => {
+    // Optimize for mobile first
+    optimizeForMobile();
+    
+    // Initialize the main application
     new SkinLesionAnalyzer();
 });
 

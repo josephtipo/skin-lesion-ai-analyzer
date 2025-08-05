@@ -488,8 +488,210 @@ body {
     color: var(--text-secondary);
 }
 
-/* Responsive Design */
-@media (max-width: 768px) {
+/* Mobile Device Detection and Optimization */
+.mobile-optimized {
+    /* Applied via JavaScript for mobile devices */
+}
+
+/* Touch-friendly interactions */
+@media (hover: none) and (pointer: coarse) {
+    /* Touch devices - larger tap targets */
+    .btn {
+        min-height: 48px;
+        padding: 1rem 1.5rem;
+    }
+    
+    .faq-question {
+        padding: 1.5rem 0;
+        min-height: 48px;
+    }
+    
+    .type-card,
+    .info-card,
+    .progress-card {
+        padding: 1.5rem;
+        min-height: 120px;
+    }
+    
+    .upload-area {
+        padding: 3rem 1.5rem;
+        min-height: 200px;
+    }
+}
+
+/* Responsive Design - Mobile First */
+@media (max-width: 480px) {
+    .container {
+        padding: 0 0.75rem;
+    }
+    
+    .header {
+        padding: 1.5rem 0;
+        margin-bottom: 1.5rem;
+    }
+    
+    .logo {
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+    
+    .logo h1 {
+        font-size: 1.75rem;
+        text-align: center;
+    }
+    
+    .logo i {
+        font-size: 2rem;
+    }
+    
+    .subtitle {
+        font-size: 0.9rem;
+        text-align: center;
+        padding: 0 0.5rem;
+    }
+    
+    .upload-area {
+        padding: 1.5rem 1rem;
+        margin: 0.5rem 0;
+    }
+    
+    .upload-content h3 {
+        font-size: 1.125rem;
+    }
+    
+    .upload-content p {
+        font-size: 0.875rem;
+    }
+    
+    .supported-formats {
+        font-size: 0.75rem;
+    }
+    
+    .image-actions {
+        flex-direction: column;
+        gap: 0.75rem;
+        width: 100%;
+    }
+    
+    .btn {
+        width: 100%;
+        min-height: 48px;
+        font-size: 0.9rem;
+        justify-content: center;
+    }
+    
+    .results-content {
+        padding: 1rem;
+    }
+    
+    .prediction-value {
+        font-size: 1.25rem;
+    }
+    
+    .confidence-text {
+        font-size: 0.8rem;
+    }
+    
+    .info-grid,
+    .types-grid,
+    .progress-grid {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+    }
+    
+    .info-card,
+    .type-card,
+    .progress-card {
+        padding: 1.25rem;
+        text-align: left;
+    }
+    
+    .info-card i {
+        font-size: 2rem;
+        margin-bottom: 0.75rem;
+    }
+    
+    .info-card h4,
+    .type-card h5,
+    .progress-card h5 {
+        font-size: 1rem;
+        margin-bottom: 0.5rem;
+    }
+    
+    .info-card p,
+    .type-card p,
+    .progress-card p {
+        font-size: 0.85rem;
+        line-height: 1.4;
+    }
+    
+    .lesion-types,
+    .lesion-types-results,
+    .training-progress,
+    .faq-section,
+    .medical-disclaimer {
+        padding: 1.5rem 0.75rem;
+        margin-bottom: 2rem;
+    }
+    
+    .lesion-types h3,
+    .training-progress h3,
+    .faq-section h3 {
+        font-size: 1.5rem;
+        margin-bottom: 1.5rem;
+    }
+    
+    .faq-question {
+        padding: 1rem 0;
+        flex-direction: row;
+        align-items: flex-start;
+    }
+    
+    .faq-question h5 {
+        font-size: 0.95rem;
+        line-height: 1.3;
+        margin-right: 1rem;
+    }
+    
+    .faq-answer p {
+        font-size: 0.85rem;
+        line-height: 1.4;
+    }
+    
+    .sample-grid {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+    }
+    
+    .sample-image {
+        max-width: 150px;
+        height: 120px;
+    }
+    
+    .disclaimer-header {
+        flex-direction: column;
+        text-align: center;
+        gap: 0.5rem;
+    }
+    
+    .disclaimer-header h3 {
+        font-size: 1.25rem;
+    }
+    
+    .disclaimer-text p,
+    .disclaimer-text li {
+        font-size: 0.8rem;
+        line-height: 1.4;
+    }
+    
+    .disclaimer-text li {
+        padding: 0.75rem;
+        margin-bottom: 0.5rem;
+    }
+}
+
+/* Tablet Portrait */
+@media (min-width: 481px) and (max-width: 768px) {
     .container {
         padding: 0 1rem;
     }
@@ -516,28 +718,32 @@ body {
     }
     
     .image-actions {
-        flex-direction: column;
-        align-items: center;
-    }
-    
-    .btn {
-        width: 100%;
-        max-width: 200px;
+        flex-direction: row;
+        gap: 1rem;
         justify-content: center;
     }
     
+    .btn {
+        min-width: 150px;
+        min-height: 44px;
+    }
+    
     .info-grid {
-        grid-template-columns: 1fr;
+        grid-template-columns: repeat(2, 1fr);
         gap: 1.5rem;
     }
     
-    .types-grid {
-        grid-template-columns: 1fr;
+    .types-grid,
+    .progress-grid {
+        grid-template-columns: repeat(2, 1fr);
         gap: 1rem;
     }
     
     .lesion-types,
-    .lesion-types-results {
+    .lesion-types-results,
+    .training-progress,
+    .faq-section,
+    .medical-disclaimer {
         padding: 2rem 1rem;
     }
     
@@ -548,32 +754,92 @@ body {
     .prediction-value {
         font-size: 1.5rem;
     }
+    
+    .sample-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
 }
 
+/* Large Mobile/Small Tablet Landscape */
+@media (min-width: 769px) and (max-width: 1024px) {
+    .info-grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+    
+    .types-grid,
+    .progress-grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+/* High DPI Displays */
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+    .accuracy-chart,
+    .sample-image {
+        image-rendering: -webkit-optimize-contrast;
+        image-rendering: crisp-edges;
+    }
+}
+
+/* iOS Specific Optimizations */
+.ios-device {
+    -webkit-text-size-adjust: 100%;
+    -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+}
+
+.ios-device .btn {
+    -webkit-appearance: none;
+    border-radius: 8px;
+}
+
+.ios-device .upload-area {
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+}
+
+/* Android Specific Optimizations */
+.android-device {
+    text-size-adjust: 100%;
+}
+
+.android-device .btn {
+    border-radius: 6px;
+}
+
+/* Mobile-specific styles */
+.mobile-optimized .upload-content {
+    user-select: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+}
+
+.mobile-optimized .btn:active {
+    transform: translateY(1px);
+    box-shadow: var(--shadow-sm);
+}
+
+.mobile-optimized .faq-question:active,
+.mobile-optimized .type-card:active,
+.mobile-optimized .info-card:active {
+    background: var(--surface-hover);
+}
+
+/* Improved mobile upload area */
 @media (max-width: 480px) {
-    .upload-area {
-        padding: 1.5rem 1rem;
+    .mobile-optimized .upload-icon {
+        font-size: 2.5rem;
+        margin-bottom: 0.75rem;
     }
     
-    .upload-icon {
-        font-size: 2rem;
-    }
-    
-    .upload-content h3 {
+    .mobile-optimized .upload-content h3 {
         font-size: 1.25rem;
+        margin-bottom: 0.75rem;
     }
     
-    .info-card {
-        padding: 1.5rem;
-    }
-    
-    .info-card i {
-        font-size: 2rem;
-    }
-    
-    .logo {
-        flex-direction: column;
-        gap: 0.5rem;
+    .mobile-optimized .upload-content p {
+        font-size: 0.9rem;
+        margin-bottom: 1rem;
     }
 }
 
