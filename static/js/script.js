@@ -74,9 +74,9 @@ class SkinLesionAnalyzer {
 
     processFile(file) {
         // Validate file type
-        const validTypes = ['image/jpeg', 'image/jpg', 'image/png'];
+        const validTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/heic'];
         if (!validTypes.includes(file.type)) {
-            this.showError('Please select a valid image file (JPG, JPEG, or PNG)');
+            this.showError('Please select a valid image file (JPG, JPEG, PNG, or HEIC)');
             return;
         }
 

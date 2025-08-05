@@ -8,6 +8,13 @@ import io
 from flask import Flask, request, jsonify, render_template, send_from_directory
 from flask_cors import CORS
 
+# Register HEIF plugin for HEIC support
+try:
+    from pillow_heif import register_heif_opener
+    register_heif_opener()
+except ImportError:
+    print("Warning: pillow-heif not available. HEIC format not supported.")
+
 from torchvision.models import efficientnet_b0
 
 # Class names

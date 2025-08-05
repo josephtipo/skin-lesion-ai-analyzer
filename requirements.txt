@@ -3,4 +3,5 @@ flask-cors==4.0.0
 torch==2.6.0
 torchvision==0.21.0
 pillow==10.4.0
+pillow-heif==0.21.0
 gunicorn==21.2.0
