@@ -35,8 +35,6 @@
                             <p>For the best results, check the FAQ section below for tips and example images.</p>
                             <div class="supported-formats">
                                 <span>Supported formats: JPG, JPEG, PNG, HEIC</span>
-                                <br>
-                                <span>Image quality examples: <a href="#faq-image-quality" class="quality-link">See FAQ below</a></span>
                             </div>
                         </div>
                         <input type="file" id="imageInput" accept="image/jpeg,image/jpg,image/png,image/heic,.heic" hidden>
@@ -156,18 +154,14 @@
                     <p>Trained on 4,015 dermatoscopic images from the ISIC dataset, this marks the first phase of training. The process is still ongoing, and the skin lesion detection model will be updated as training and validation progress. The current training phase uses 401,059 images, courtesy of the International Skin Imaging Collaboration.</p>
                 </div>
                 <div class="progress-card">
-                    <h5>Training Technique</h5>
+                    <h5>Model training methodology</h5>
                     <p>This project is a supervised deep learning approach for skin lesion classification using EfficientNet - a convolutional neural network (CNN) architecture with a custom head, fine‑tuned on the ISIC dataset to identify seven lesion types.</p>
                     <p>Training images undergo advanced augmentation (random crop, flip, rotation, color jitter) and ImageNet‑based normalisation, while validation/test sets are resized and normalised.</p>
                     <p>Class imbalance is addressed by computing class weights and applying Focal Loss (gamma=2) to prioritise hard examples. Optimisation uses AdamW (lr=0.001, weight decay=0.01) over 20 epochs with batch size 32.</p>
                     <p>Metrics including accuracy, loss, and UAR are tracked via Weights & Biases, with final evaluation on a held‑out test set.</p>
                 </div>
                 <div class="progress-card">
-                    <h5>Model Architecture</h5>
-                    <p>Using EfficientNet - a convolutional neural network (CNN) architecture as the base model with a custom classification head</p>
-                </div>
-                <div class="progress-card">
-                    <h5>Skin Lesion Detection AI – Phase 1 Results</h5>
+                    <h5>Skin Lesion Detection AI – Phase 1 Training Results</h5>
                     <p>Using EfficientNet - a convolutional neural network (CNN) architecture with a custom classification head, the model was trained on 4,015 ISIC dermatoscopic images.</p>
                     <p>Training accuracy reached ~89%, with validation accuracy at ~76% and UAR at ~77%, closely aligned — a strong indicator of good generalisation.</p>
                     <p>Loss decreased steadily with minimal overfitting, showing the model is learning robust patterns across lesion types.</p>
@@ -175,6 +169,10 @@
                     <div class="training-chart">
                         <img src="{{ url_for('static', filename='images/Training_Accuracy.jpeg') }}" alt="Training Accuracy Chart" class="accuracy-chart">
                     </div>
+                </div>
+                <div class="progress-card">
+                    <h5>Model Architecture</h5>
+                    <p>Using EfficientNet - a convolutional neural network (CNN) architecture as the base model with a custom classification head</p>
                 </div>
             </div>
         </section>
@@ -198,7 +196,7 @@
                         <i class="fas fa-chevron-down"></i>
                     </div>
                     <div class="faq-answer">
-                        <p>This AI model achieves over 85% accuracy on validation datasets. However, accuracy can vary depending on image quality, lighting conditions, and lesion characteristics. The AI provides confidence scores to help interpret the reliability of each prediction.</p>
+                        <p>This version of the AI model achieved over 85% accuracy in both training and testing during Phase 1, with further improvements expected in Phase 2. However, accuracy may vary depending on image quality, lighting conditions, and the specific characteristics of each lesion. To support interpretation, the AI also provides confidence scores indicating the reliability of each prediction.</p>
                     </div>
                 </div>
                 
