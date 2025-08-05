@@ -71,7 +71,15 @@ def validate_lesion_image(image):
         if is_solid_color(rgb_img):
             return False, "Image appears to be a solid color or screenshot"
         
-        # 2. Check image quality and content
+        # 2. Check if it's a medical-style close-up photo
+        if not is_medical_photo_composition(rgb_img):
+            return False, "Image doesn't appear to be a medical close-up photo"
+        
+        # 3. Check for skin-like texture patterns
+        if not has_skin_texture(rgb_img):
+            return False, "Image doesn't contain skin-like texture patterns"
+        
+        # 4. Check image quality and content
         if not is_photographic_quality(rgb_img):
             return False, "Image appears to be low quality or non-photographic"
         
@@ -100,32 +108,105 @@ def is_solid_color(img_array):
         
     return False
 
-def has_skin_like_colors(img_array):
-    """Check if image contains skin-like colors"""
-    # Convert to HSV for better skin detection
-    hsv_img = cv2.cvtColor(img_array, cv2.COLOR_RGB2HSV)
+def is_medical_photo_composition(img_array):
+    """Check if image has composition typical of medical photos"""
+    height, width = img_array.shape[:2]
     
-    # Define skin color ranges in HSV
-    # Range 1: Light skin tones
-    lower_skin1 = np.array([0, 20, 70])
-    upper_skin1 = np.array([20, 255, 255])
+    # Check if image is reasonably sized for medical photo
+    if height < 100 or width < 100:
+        return False
     
-    # Range 2: Medium skin tones  
-    lower_skin2 = np.array([0, 40, 50])
-    upper_skin2 = np.array([25, 180, 230])
+    # Convert to grayscale for analysis
+    gray = cv2.cvtColor(img_array, cv2.COLOR_RGB2GRAY)
     
-    # Create masks for skin color ranges
-    mask1 = cv2.inRange(hsv_img, lower_skin1, upper_skin1)
-    mask2 = cv2.inRange(hsv_img, lower_skin2, upper_skin2)
+    # Check for centered subject (medical photos usually have centered lesions)
+    # Create center region (middle 60% of image)
+    center_h_start = int(height * 0.2)
+    center_h_end = int(height * 0.8)
+    center_w_start = int(width * 0.2)
+    center_w_end = int(width * 0.8)
     
-    # Combine masks
-    skin_mask = cv2.bitwise_or(mask1, mask2)
+    center_region = gray[center_h_start:center_h_end, center_w_start:center_w_end]
+    edge_regions = np.concatenate([
+        gray[:center_h_start, :].flatten(),
+        gray[center_h_end:, :].flatten(),
+        gray[:, :center_w_start].flatten(),
+        gray[:, center_w_end:].flatten()
+    ])
     
-    # Calculate percentage of skin-like pixels
-    skin_ratio = np.sum(skin_mask > 0) / skin_mask.size
+    # Medical photos usually have more detail/variance in center than edges
+    center_variance = np.var(center_region)
+    edge_variance = np.var(edge_regions) if len(edge_regions) > 0 else 0
     
-    # Require at least 15% skin-like colors
-    return skin_ratio > 0.15
+    # Check if center has more detail (typical of medical close-ups)
+    if center_variance < edge_variance * 0.5:
+        return False
+    
+    # Check for excessive geometric patterns (suggests non-medical content)
+    # Use Hough line detection to find straight lines
+    edges = cv2.Canny(gray, 50, 150)
+    lines = cv2.HoughLines(edges, 1, np.pi/180, threshold=int(min(height, width) * 0.3))
+    
+    # Too many straight lines suggests architectural/geometric content
+    if lines is not None and len(lines) > 10:
+        return False
+    
+    return True
+
+def has_skin_texture(img_array):
+    """Check if image contains skin-like texture patterns using texture analysis"""
+    # Convert to grayscale
+    gray = cv2.cvtColor(img_array, cv2.COLOR_RGB2GRAY)
+    
+    # Calculate Local Binary Pattern-like texture measure
+    # Use gradient-based texture analysis instead of full LBP to avoid new dependencies
+    
+    # Calculate gradients in different directions
+    grad_x = cv2.Sobel(gray, cv2.CV_64F, 1, 0, ksize=3)
+    grad_y = cv2.Sobel(gray, cv2.CV_64F, 0, 1, ksize=3)
+    
+    # Calculate gradient magnitude and direction
+    grad_mag = np.sqrt(grad_x**2 + grad_y**2)
+    
+    # Skin has relatively smooth gradients with some texture
+    # Too smooth = solid color, too rough = artificial texture
+    texture_variance = np.var(grad_mag)
+    
+    # Check for organic texture patterns
+    # Skin should have moderate texture variance (not too smooth, not too chaotic)
+    if texture_variance < 50:  # Too smooth (solid color, very blurred)
+        return False
+    if texture_variance > 5000:  # Too chaotic (text, artificial patterns)
+        return False
+    
+    # Check for repetitive patterns (suggests artificial content)
+    # Use frequency domain analysis
+    f_transform = np.fft.fft2(gray)
+    f_shift = np.fft.fftshift(f_transform)
+    magnitude_spectrum = np.log(np.abs(f_shift) + 1)
+    
+    # Check for dominant frequency peaks (suggests repetitive patterns)
+    # Flatten and find peaks
+    spectrum_flat = magnitude_spectrum.flatten()
+    spectrum_sorted = np.sort(spectrum_flat)[::-1]
+    
+    # If there are very dominant frequencies, it might be artificial
+    if len(spectrum_sorted) > 10:
+        # Check if top frequencies are much higher than average
+        top_freq_ratio = spectrum_sorted[0] / np.mean(spectrum_sorted[10:])
+        if top_freq_ratio > 3.0:  # Too dominant = artificial pattern
+            return False
+    
+    # Check color distribution - skin should have some color variation
+    # Convert to HSV for better color analysis
+    hsv = cv2.cvtColor(img_array, cv2.COLOR_RGB2HSV)
+    
+    # Check if image has reasonable color diversity (not monochrome)
+    color_variance = np.var(hsv[:, :, 1])  # Saturation variance
+    if color_variance < 10:  # Too little color variation
+        return False
+    
+    return True
 
 def is_photographic_quality(img_array):
     """Check if image appears to be a photograph"""
