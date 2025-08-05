@@ -164,8 +164,11 @@
                     </div>
                 </div>
                 <div class="progress-card">
-                    <h5>Data Augmentation</h5>
-                    <p>Enhanced with rotation, flipping, and color adjustments</p>
+                    <h5>Training Technique</h5>
+                    <p>This project is a supervised deep learning approach for skin lesion classification using EfficientNet‑B0 with a custom head, fine‑tuned on the ISIC dataset to identify seven lesion types.</p>
+                    <p>Training images undergo advanced augmentation (random crop, flip, rotation, color jitter) and ImageNet‑based normalisation, while validation/test sets are resized and normalised.</p>
+                    <p>Class imbalance is addressed by computing class weights and applying Focal Loss (gamma=2) to prioritise hard examples. Optimisation uses AdamW (lr=0.001, weight decay=0.01) over 20 epochs with batch size 32.</p>
+                    <p>Metrics including accuracy, loss, and UAR are tracked via Weights & Biases, with final evaluation on a held‑out test set.</p>
                 </div>
             </div>
         </section>
@@ -229,7 +232,7 @@
                         <i class="fas fa-chevron-down"></i>
                     </div>
                     <div class="faq-answer">
-                        <p>For best results, use clear, well-lit images with the lesion prominently visible. Avoid heavily shadowed images. The lesion should fill most of the frame, and the image should be taken from a reasonable distance.</p>
+                        <p>For best results, use clear, well-lit images with the lesion prominently visible. The lesion should fill most of the frame, and the image should be taken from a reasonable distance.</p>
                         
                         <div class="sample-images">
                             <h6>Sample Quality Examples:</h6>
