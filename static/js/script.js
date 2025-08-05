@@ -18,7 +18,6 @@ class SkinLesionAnalyzer {
         this.predictionValue = document.getElementById('predictionValue');
         this.confidenceFill = document.getElementById('confidenceFill');
         this.confidenceText = document.getElementById('confidenceText');
-        this.lesionTypesResults = document.getElementById('lesionTypesResults');
     }
 
     attachEventListeners() {
@@ -190,10 +189,6 @@ class SkinLesionAnalyzer {
         this.resultsSection.style.display = 'block';
         this.resultsSection.classList.add('show');
         
-        // Show lesion types after results
-        if (this.lesionTypesResults) {
-            this.lesionTypesResults.style.display = 'block';
-        }
         
         // Scroll to results
         this.resultsSection.scrollIntoView({ 
@@ -205,9 +200,6 @@ class SkinLesionAnalyzer {
     hideResults() {
         this.resultsSection.style.display = 'none';
         this.resultsSection.classList.remove('show');
-        if (this.lesionTypesResults) {
-            this.lesionTypesResults.style.display = 'none';
-        }
     }
 
     showLoading() {

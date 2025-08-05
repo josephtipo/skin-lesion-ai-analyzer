@@ -86,39 +86,6 @@
                 </div>
             </div>
             
-            <div class="lesion-types-results" id="lesionTypesResults" style="display: none;">
-                <h3>Detectable Lesion Types</h3>
-                <div class="types-grid">
-                    <div class="type-card">
-                        <h5>Melanoma (MEL)</h5>
-                        <p>Most serious form of skin cancer</p>
-                    </div>
-                    <div class="type-card">
-                        <h5>Melanocytic Nevus (NV)</h5>
-                        <p>Common benign skin lesions (moles)</p>
-                    </div>
-                    <div class="type-card">
-                        <h5>Basal Cell Carcinoma (BCC)</h5>
-                        <p>Most common type of skin cancer</p>
-                    </div>
-                    <div class="type-card">
-                        <h5>Actinic Keratosis (AKIEC)</h5>
-                        <p>Pre-cancerous skin condition</p>
-                    </div>
-                    <div class="type-card">
-                        <h5>Benign Keratosis (BKL)</h5>
-                        <p>Non-cancerous skin growths</p>
-                    </div>
-                    <div class="type-card">
-                        <h5>Dermatofibroma (DF)</h5>
-                        <p>Benign skin nodules</p>
-                    </div>
-                    <div class="type-card">
-                        <h5>Vascular Lesion (VASC)</h5>
-                        <p>Blood vessel-related skin lesions</p>
-                    </div>
-                </div>
-            </div>
         </main>
 
         <section class="lesion-types">
@@ -262,7 +229,23 @@
                         <i class="fas fa-chevron-down"></i>
                     </div>
                     <div class="faq-answer">
-                        <p>For best results, use clear, well-lit images with the lesion prominently visible. Avoid blurry, dark, or heavily shadowed images. The lesion should fill most of the frame, and the image should be taken from a reasonable distance.</p>
+                        <p>For best results, use clear, well-lit images with the lesion prominently visible. Avoid heavily shadowed images. The lesion should fill most of the frame, and the image should be taken from a reasonable distance.</p>
+                        
+                        <div class="sample-images">
+                            <h6>Sample Quality Examples:</h6>
+                            <div class="sample-grid">
+                                <div class="sample-item">
+                                    <img src="{{ url_for('static', filename='images/ISIC_0024323.jpg') }}" alt="Good quality lesion image example" class="sample-image">
+                                    <div class="sample-label good">✓ Good Quality</div>
+                                    <p class="sample-description">Clear, well-focused image with lesion prominently visible</p>
+                                </div>
+                                <div class="sample-item">
+                                    <img src="{{ url_for('static', filename='images/ISIC_0026758.jpg') }}" alt="Good quality lesion image example" class="sample-image">
+                                    <div class="sample-label good">✓ Good Quality</div>
+                                    <p class="sample-description">Proper lighting and contrast, lesion details clearly visible</p>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
                 
