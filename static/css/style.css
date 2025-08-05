@@ -653,6 +653,24 @@ input[type="file"]:focus + .upload-area {
     color: var(--text-secondary);
 }
 
+.training-chart {
+    margin-top: 1rem;
+    text-align: center;
+}
+
+.accuracy-chart {
+    max-width: 100%;
+    height: auto;
+    border-radius: 8px;
+    box-shadow: var(--shadow-sm);
+    transition: var(--transition);
+}
+
+.accuracy-chart:hover {
+    box-shadow: var(--shadow);
+    transform: scale(1.02);
+}
+
 /* FAQ Section */
 .faq-section {
     background: var(--surface);

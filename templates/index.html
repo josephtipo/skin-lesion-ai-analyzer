@@ -187,8 +187,14 @@
                     <p>Using EfficientNet‑B0 as the base model with a custom classification head</p>
                 </div>
                 <div class="progress-card">
-                    <h5>Training Accuracy</h5>
-                    <p>Achieved 85%+ accuracy on validation set</p>
+                    <h5>Skin Lesion Detection AI – Phase 1 Results</h5>
+                    <p>Using EfficientNet‑B0 with a custom classification head, the model was trained on 4,015 ISIC dermatoscopic images.</p>
+                    <p>Training accuracy reached ~89%, with validation accuracy at ~76% and UAR at ~77%, closely aligned — a strong indicator of good generalisation.</p>
+                    <p>Loss decreased steadily with minimal overfitting, showing the model is learning robust patterns across lesion types.</p>
+                    <p>These early results set a solid foundation for further tuning and scaling with the full 401k‑image ISIC dataset.</p>
+                    <div class="training-chart">
+                        <img src="{{ url_for('static', filename='images/Training_Accuracy.jpeg') }}" alt="Training Accuracy Chart" class="accuracy-chart">
+                    </div>
                 </div>
                 <div class="progress-card">
                     <h5>Data Augmentation</h5>
