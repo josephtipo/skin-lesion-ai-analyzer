@@ -374,7 +374,7 @@ if __name__ == '__main__':
             print("Model pre-loaded successfully!")
         else:
             print("Warning: Model file not found. App will start but predictions will fail.")
-            print("Please upload model.pth to the root directory.")
+            print("Please upload the trained model file to the root directory.")
     except Exception as e:
         print(f"Warning: Could not pre-load model: {e}")
         print("App will start but predictions may fail.")
