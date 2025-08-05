@@ -586,3 +586,254 @@ input[type="file"]:focus + .upload-area {
     outline: 2px solid var(--primary-color);
     outline-offset: 2px;
 }
+
+/* Training Progress Section */
+.training-progress {
+    background: var(--surface);
+    padding: 3rem;
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow);
+    margin-bottom: 3rem;
+}
+
+.training-progress h3 {
+    text-align: center;
+    font-size: 2rem;
+    font-weight: 700;
+    margin-bottom: 2rem;
+    color: var(--text-primary);
+}
+
+.progress-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1.5rem;
+}
+
+.progress-card {
+    background: var(--surface-hover);
+    padding: 1.5rem;
+    border-radius: 8px;
+    border-left: 4px solid var(--accent-color);
+    transition: var(--transition);
+}
+
+.progress-card:hover {
+    transform: translateX(4px);
+    box-shadow: var(--shadow);
+}
+
+.progress-card h5 {
+    font-size: 1.125rem;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+    color: var(--text-primary);
+}
+
+.progress-card p {
+    font-size: 0.875rem;
+    color: var(--text-secondary);
+}
+
+/* FAQ Section */
+.faq-section {
+    background: var(--surface);
+    padding: 3rem;
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow);
+    margin-bottom: 3rem;
+}
+
+.faq-section h3 {
+    text-align: center;
+    font-size: 2rem;
+    font-weight: 700;
+    margin-bottom: 2rem;
+    color: var(--text-primary);
+}
+
+.faq-container {
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.faq-item {
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 1rem;
+}
+
+.faq-item:last-child {
+    border-bottom: none;
+    margin-bottom: 0;
+}
+
+.faq-question {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.5rem 0;
+    cursor: pointer;
+    transition: var(--transition);
+}
+
+.faq-question:hover {
+    color: var(--primary-color);
+}
+
+.faq-question h5 {
+    font-size: 1.125rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin: 0;
+    transition: var(--transition);
+}
+
+.faq-question:hover h5 {
+    color: var(--primary-color);
+}
+
+.faq-question i {
+    font-size: 1rem;
+    color: var(--text-secondary);
+    transition: var(--transition);
+}
+
+.faq-item.active .faq-question i {
+    transform: rotate(180deg);
+    color: var(--primary-color);
+}
+
+.faq-answer {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease-out, padding 0.3s ease-out;
+}
+
+.faq-item.active .faq-answer {
+    max-height: 500px;
+    padding-bottom: 1.5rem;
+}
+
+.faq-answer p {
+    color: var(--text-secondary);
+    line-height: 1.6;
+    margin: 0;
+}
+
+/* Medical Disclaimer Section */
+.medical-disclaimer {
+    background: linear-gradient(135deg, #fee2e2 0%, #fecaca 100%);
+    border: 2px solid #fca5a5;
+    border-radius: var(--border-radius);
+    margin-bottom: 3rem;
+    box-shadow: var(--shadow);
+}
+
+.disclaimer-content {
+    padding: 2rem;
+}
+
+.disclaimer-header {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+}
+
+.disclaimer-header i {
+    font-size: 2rem;
+    color: var(--error-color);
+}
+
+.disclaimer-header h3 {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #991b1b;
+    margin: 0;
+}
+
+.disclaimer-text p {
+    color: #7f1d1d;
+    margin-bottom: 1rem;
+    line-height: 1.6;
+}
+
+.disclaimer-text p:first-of-type {
+    font-size: 1.125rem;
+    font-weight: 600;
+    text-align: center;
+    margin-bottom: 1.5rem;
+}
+
+.disclaimer-text ul {
+    list-style: none;
+    padding: 0;
+    margin-bottom: 1.5rem;
+}
+
+.disclaimer-text li {
+    background: rgba(239, 68, 68, 0.1);
+    padding: 1rem;
+    margin-bottom: 0.75rem;
+    border-radius: 8px;
+    border-left: 4px solid var(--error-color);
+    color: #7f1d1d;
+}
+
+.disclaimer-text li strong {
+    color: #991b1b;
+}
+
+.disclaimer-text p:last-child {
+    font-weight: 600;
+    text-align: center;
+    font-size: 1.125rem;
+    margin-bottom: 0;
+    padding: 1rem;
+    background: rgba(239, 68, 68, 0.1);
+    border-radius: 8px;
+}
+
+/* Responsive adjustments for new sections */
+@media (max-width: 768px) {
+    .training-progress,
+    .faq-section,
+    .medical-disclaimer {
+        padding: 2rem 1rem;
+    }
+    
+    .training-progress h3,
+    .faq-section h3 {
+        font-size: 1.5rem;
+    }
+    
+    .progress-grid {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+    }
+    
+    .disclaimer-header {
+        flex-direction: column;
+        text-align: center;
+    }
+    
+    .disclaimer-header i {
+        font-size: 2.5rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .training-progress,
+    .faq-section,
+    .medical-disclaimer {
+        padding: 1.5rem 1rem;
+    }
+    
+    .faq-question {
+        padding: 1rem 0;
+    }
+    
+    .disclaimer-text li {
+        padding: 0.75rem;
+    }
+}

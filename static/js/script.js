@@ -426,11 +426,42 @@ const observer = new IntersectionObserver((entries) => {
 
 // Observe elements for scroll animations
 document.addEventListener('DOMContentLoaded', () => {
-    const animateElements = document.querySelectorAll('.info-card, .type-card');
+    const animateElements = document.querySelectorAll('.info-card, .type-card, .progress-card');
     animateElements.forEach(el => {
         el.style.opacity = '0';
         el.style.transform = 'translateY(20px)';
         el.style.transition = 'opacity 0.6s ease-out, transform 0.6s ease-out';
         observer.observe(el);
     });
+    
+    // Initialize FAQ functionality
+    initializeFAQ();
 });
+
+// FAQ functionality
+function initializeFAQ() {
+    const faqItems = document.querySelectorAll('.faq-item');
+    
+    faqItems.forEach(item => {
+        const question = item.querySelector('.faq-question');
+        const answer = item.querySelector('.faq-answer');
+        
+        question.addEventListener('click', () => {
+            const isActive = item.classList.contains('active');
+            
+            // Close all other FAQ items
+            faqItems.forEach(otherItem => {
+                if (otherItem !== item) {
+                    otherItem.classList.remove('active');
+                }
+            });
+            
+            // Toggle current item
+            if (isActive) {
+                item.classList.remove('active');
+            } else {
+                item.classList.add('active');
+            }
+        });
+    });
+}

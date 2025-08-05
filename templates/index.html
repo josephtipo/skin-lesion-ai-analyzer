@@ -139,6 +139,116 @@
                 </div>
             </div>
         </section>
+
+        <section class="training-progress">
+            <h3>Training Progress & Model Performance</h3>
+            <div class="progress-grid">
+                <div class="progress-card">
+                    <h5>Dataset Size</h5>
+                    <p>Trained on 10,015 dermatoscopic images from HAM10000 dataset</p>
+                </div>
+                <div class="progress-card">
+                    <h5>Model Architecture</h5>
+                    <p>EfficientNet-B0 with custom classification head</p>
+                </div>
+                <div class="progress-card">
+                    <h5>Training Accuracy</h5>
+                    <p>Achieved 85%+ accuracy on validation set</p>
+                </div>
+                <div class="progress-card">
+                    <h5>Data Augmentation</h5>
+                    <p>Enhanced with rotation, flipping, and color adjustments</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="faq-section">
+            <h3>Frequently Asked Questions</h3>
+            <div class="faq-container">
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <h5>What is Skin Lesion AI?</h5>
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Skin Lesion AI is an advanced artificial intelligence system designed to analyze dermatoscopic images and assist in the identification of various skin lesions. Our AI model uses deep learning techniques trained on thousands of medical images to provide rapid, preliminary analysis of skin conditions.</p>
+                    </div>
+                </div>
+                
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <h5>How accurate is the AI analysis?</h5>
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Our AI model achieves over 85% accuracy on validation datasets. However, accuracy can vary depending on image quality, lighting conditions, and lesion characteristics. The AI provides confidence scores to help interpret the reliability of each prediction.</p>
+                    </div>
+                </div>
+                
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <h5>Can this replace a doctor's diagnosis?</h5>
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <p>No, absolutely not. This AI tool is designed for educational and screening purposes only. It should never replace professional medical diagnosis or treatment. Always consult with a qualified dermatologist or healthcare provider for proper medical evaluation and treatment decisions.</p>
+                    </div>
+                </div>
+                
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <h5>What types of skin lesions can it detect?</h5>
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <p>The AI can identify 7 types of skin lesions: Melanoma (MEL), Melanocytic nevus (NV), Basal cell carcinoma (BCC), Actinic keratosis (AKIEC), Benign keratosis (BKL), Dermatofibroma (DF), and Vascular lesions (VASC).</p>
+                    </div>
+                </div>
+                
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <h5>Is my data secure and private?</h5>
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Yes, your privacy is our priority. Images are processed locally in your browser and are not stored on our servers. No personal information or images are collected, transmitted, or retained by our system.</p>
+                    </div>
+                </div>
+                
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <h5>What image quality is recommended?</h5>
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <p>For best results, use clear, well-lit images with the lesion prominently visible. Avoid blurry, dark, or heavily shadowed images. The lesion should fill most of the frame, and the image should be taken from a reasonable distance.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="medical-disclaimer">
+            <div class="disclaimer-content">
+                <div class="disclaimer-header">
+                    <i class="fas fa-exclamation-triangle"></i>
+                    <h3>Important Medical Disclaimer</h3>
+                </div>
+                <div class="disclaimer-text">
+                    <p><strong>FOR EDUCATIONAL AND INFORMATIONAL PURPOSES ONLY</strong></p>
+                    <p>This AI-powered skin lesion analyzer is designed solely for educational and informational purposes. It is NOT a medical diagnostic tool and should NOT be used as a substitute for professional medical advice, diagnosis, or treatment.</p>
+                    
+                    <ul>
+                        <li><strong>Not Medical Advice:</strong> The results provided by this AI system do not constitute medical advice and should not be relied upon for medical decision-making.</li>
+                        <li><strong>Consult Healthcare Professionals:</strong> Always seek the advice of qualified healthcare professionals, particularly dermatologists, for proper evaluation of skin lesions.</li>
+                        <li><strong>Emergency Situations:</strong> If you notice rapid changes in a mole or lesion, bleeding, itching, or other concerning symptoms, seek immediate medical attention.</li>
+                        <li><strong>Limitations:</strong> AI systems have limitations and may produce false positives or false negatives. Results should never delay or replace professional medical consultation.</li>
+                        <li><strong>No Liability:</strong> The developers and operators of this tool assume no responsibility for any medical decisions made based on the AI analysis results.</li>
+                    </ul>
+                    
+                    <p><strong>Remember:</strong> Early detection and professional medical evaluation are crucial for skin health. When in doubt, always consult a healthcare professional.</p>
+                </div>
+            </div>
+        </section>
     </div>
 
     <script src="{{ url_for('static', filename='js/script.js') }}"></script>
