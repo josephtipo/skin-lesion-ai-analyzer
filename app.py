@@ -284,6 +284,18 @@ def analyze():
             if image_file.filename == '':
                 return jsonify({'error': 'No image selected'}), 400
             image = Image.open(image_file.stream)
+            
+            # Check if image is HEIC format and convert to JPG
+            if hasattr(image, 'format') and image.format in ['HEIF', 'HEIC']:
+                # Convert HEIC to JPG format
+                jpg_buffer = io.BytesIO()
+                # Convert to RGB first to ensure compatibility
+                rgb_image = image.convert('RGB')
+                rgb_image.save(jpg_buffer, format='JPEG', quality=95)
+                jpg_buffer.seek(0)
+                # Reload as JPG
+                image = Image.open(jpg_buffer)
+                print(f"Converted HEIC file upload to JPG format")
         
         # Check if it's a JSON request with base64 image
         elif request.is_json and 'image' in request.json:
@@ -292,6 +304,19 @@ def analyze():
                 base64_data = request.json['image']
                 image_data = base64.b64decode(base64_data)
                 image = Image.open(io.BytesIO(image_data))
+                
+                # Check if image is HEIC format and convert to JPG
+                if hasattr(image, 'format') and image.format in ['HEIF', 'HEIC']:
+                    # Convert HEIC to JPG format
+                    jpg_buffer = io.BytesIO()
+                    # Convert to RGB first to ensure compatibility
+                    rgb_image = image.convert('RGB')
+                    rgb_image.save(jpg_buffer, format='JPEG', quality=95)
+                    jpg_buffer.seek(0)
+                    # Reload as JPG
+                    image = Image.open(jpg_buffer)
+                    print(f"Converted HEIC base64 image to JPG format")
+                    
             except Exception as e:
                 return jsonify({'error': 'Invalid base64 image data'}), 400
         
