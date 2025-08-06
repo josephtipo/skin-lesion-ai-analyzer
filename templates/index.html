@@ -91,6 +91,61 @@
                         </div>
                     </div>
                 </div>
+                
+                <!-- Feedback Section -->
+                <div class="feedback-section" id="feedbackSection">
+                    <div class="feedback-card">
+                        <div class="feedback-header">
+                            <i class="fas fa-comments"></i>
+                            <h4>Help Improve Our AI</h4>
+                        </div>
+                        <div class="feedback-content">
+                            <p>Your feedback helps us make the AI more accurate. Was this analysis helpful?</p>
+                            
+                            <div class="rating-buttons" id="ratingButtons">
+                                <button class="feedback-btn helpful" id="helpfulBtn">
+                                    <i class="fas fa-thumbs-up"></i>
+                                    <span>Helpful</span>
+                                </button>
+                                <button class="feedback-btn not-helpful" id="notHelpfulBtn">
+                                    <i class="fas fa-thumbs-down"></i>
+                                    <span>Not Helpful</span>
+                                </button>
+                            </div>
+                            
+                            <div class="detailed-feedback" id="detailedFeedback" style="display: none;">
+                                <div class="feedback-form">
+                                    <textarea id="feedbackComment" placeholder="Tell us more about your experience (optional)..." rows="3"></textarea>
+                                    <select id="feedbackCategory">
+                                        <option value="">Select feedback category (optional)</option>
+                                        <option value="image_quality">Image quality issue</option>
+                                        <option value="incorrect_prediction">Prediction seems incorrect</option>
+                                        <option value="interface_problem">Interface or usability issue</option>
+                                        <option value="general_suggestion">General suggestion</option>
+                                        <option value="other">Other</option>
+                                    </select>
+                                    <div class="feedback-actions">
+                                        <button class="btn btn-primary" id="submitFeedback">
+                                            <i class="fas fa-paper-plane"></i>
+                                            Submit Feedback
+                                        </button>
+                                        <button class="btn btn-secondary" id="skipFeedback">
+                                            Skip
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="feedback-thanks" id="feedbackThanks" style="display: none;">
+                                <div class="thanks-message">
+                                    <i class="fas fa-heart"></i>
+                                    <h5>Thank you for your feedback!</h5>
+                                    <p>Your input helps us improve the AI for everyone.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
 
             <div class="loading-overlay" id="loadingOverlay" style="display: none;">

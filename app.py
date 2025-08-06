@@ -363,6 +363,48 @@ def analyze():
         print(f"General error: {e}")
         return jsonify({'error': f'Server error: {str(e)}'}), 500
 
+@app.route('/feedback', methods=['POST'])
+def submit_feedback():
+    """Handle user feedback submissions"""
+    try:
+        feedback_data = request.get_json()
+        
+        # Validate required fields
+        if not feedback_data or 'rating' not in feedback_data:
+            return jsonify({'error': 'Invalid feedback data'}), 400
+        
+        # Extract feedback information
+        rating = feedback_data.get('rating')
+        comment = feedback_data.get('comment', '').strip()
+        category = feedback_data.get('category', '')
+        prediction = feedback_data.get('prediction', '')
+        confidence = feedback_data.get('confidence', '')
+        timestamp = feedback_data.get('timestamp', '')
+        session_id = feedback_data.get('session_id', '')
+        
+        # Log feedback to console (you can extend this to save to database)
+        print(f"=== USER FEEDBACK ===")
+        print(f"Rating: {rating}")
+        print(f"Prediction: {prediction}")
+        print(f"Confidence: {confidence}")
+        print(f"Category: {category}")
+        print(f"Comment: {comment}")
+        print(f"Session ID: {session_id}")
+        print(f"Timestamp: {timestamp}")
+        print("=====================")
+        
+        # Here you could save to database, send email, etc.
+        # For now, we'll just log and return success
+        
+        return jsonify({
+            'status': 'success',
+            'message': 'Feedback received successfully'
+        })
+        
+    except Exception as e:
+        print(f"Error processing feedback: {e}")
+        return jsonify({'error': 'Failed to process feedback'}), 500
+
 @app.route('/health')
 def health_check():
     """Health check endpoint"""

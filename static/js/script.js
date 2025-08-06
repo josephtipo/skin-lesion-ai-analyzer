@@ -18,6 +18,17 @@ class SkinLesionAnalyzer {
         this.predictionValue = document.getElementById('predictionValue');
         this.confidenceFill = document.getElementById('confidenceFill');
         this.confidenceText = document.getElementById('confidenceText');
+        
+        // Feedback elements
+        this.feedbackSection = document.getElementById('feedbackSection');
+        this.helpfulBtn = document.getElementById('helpfulBtn');
+        this.notHelpfulBtn = document.getElementById('notHelpfulBtn');
+        this.detailedFeedback = document.getElementById('detailedFeedback');
+        this.feedbackComment = document.getElementById('feedbackComment');
+        this.feedbackCategory = document.getElementById('feedbackCategory');
+        this.submitFeedback = document.getElementById('submitFeedback');
+        this.skipFeedback = document.getElementById('skipFeedback');
+        this.feedbackThanks = document.getElementById('feedbackThanks');
     }
 
     attachEventListeners() {
@@ -39,6 +50,12 @@ class SkinLesionAnalyzer {
         // Button events
         this.changeImageBtn.addEventListener('click', () => this.resetUpload());
         this.analyzeBtn.addEventListener('click', () => this.analyzeImage());
+        
+        // Feedback events
+        this.helpfulBtn.addEventListener('click', () => this.handleFeedbackRating('helpful'));
+        this.notHelpfulBtn.addEventListener('click', () => this.handleFeedbackRating('not-helpful'));
+        this.submitFeedback.addEventListener('click', () => this.submitUserFeedback());
+        this.skipFeedback.addEventListener('click', () => this.skipUserFeedback());
 
         // Prevent default drag behaviors on document
         document.addEventListener('dragover', (e) => e.preventDefault());
@@ -200,6 +217,94 @@ class SkinLesionAnalyzer {
     hideResults() {
         this.resultsSection.style.display = 'none';
         this.resultsSection.classList.remove('show');
+        this.resetFeedback();
+    }
+    
+    resetFeedback() {
+        // Reset feedback form
+        this.helpfulBtn.classList.remove('selected');
+        this.notHelpfulBtn.classList.remove('selected');
+        this.detailedFeedback.style.display = 'none';
+        this.feedbackThanks.style.display = 'none';
+        this.feedbackComment.value = '';
+        this.feedbackCategory.value = '';
+        
+        // Reset rating buttons visibility
+        document.getElementById('ratingButtons').style.display = 'flex';
+    }
+    
+    handleFeedbackRating(rating) {
+        // Update button states
+        this.helpfulBtn.classList.remove('selected');
+        this.notHelpfulBtn.classList.remove('selected');
+        
+        if (rating === 'helpful') {
+            this.helpfulBtn.classList.add('selected');
+        } else {
+            this.notHelpfulBtn.classList.add('selected');
+        }
+        
+        // Store the rating
+        this.currentFeedbackRating = rating;
+        
+        // Show detailed feedback form
+        this.detailedFeedback.style.display = 'block';
+    }
+    
+    async submitUserFeedback() {
+        const feedbackData = {
+            rating: this.currentFeedbackRating,
+            comment: this.feedbackComment.value.trim(),
+            category: this.feedbackCategory.value,
+            prediction: this.predictionValue.textContent,
+            confidence: this.confidenceText.textContent,
+            timestamp: new Date().toISOString(),
+            session_id: this.generateSessionId()
+        };
+        
+        try {
+            const response = await fetch('/feedback', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(feedbackData)
+            });
+            
+            if (response.ok) {
+                this.showFeedbackThanks();
+            } else {
+                console.error('Failed to submit feedback');
+                this.showFeedbackThanks(); // Still show thanks to avoid user confusion
+            }
+        } catch (error) {
+            console.error('Error submitting feedback:', error);
+            this.showFeedbackThanks(); // Still show thanks to avoid user confusion
+        }
+    }
+    
+    skipUserFeedback() {
+        this.showFeedbackThanks();
+    }
+    
+    showFeedbackThanks() {
+        // Hide rating buttons and detailed feedback
+        document.getElementById('ratingButtons').style.display = 'none';
+        this.detailedFeedback.style.display = 'none';
+        
+        // Show thanks message
+        this.feedbackThanks.style.display = 'block';
+        
+        // Auto-hide after 3 seconds
+        setTimeout(() => {
+            this.feedbackThanks.style.display = 'none';
+            document.getElementById('ratingButtons').style.display = 'flex';
+            this.resetFeedback();
+        }, 3000);
+    }
+    
+    generateSessionId() {
+        return 'session_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
     }
 
     showLoading() {
