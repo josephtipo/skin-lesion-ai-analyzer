@@ -363,42 +363,43 @@ def analyze():
         print(f"General error: {e}")
         return jsonify({'error': f'Server error: {str(e)}'}), 500
 
+
 @app.route('/feedback', methods=['POST'])
 def submit_feedback():
-    """Handle user feedback submissions"""
+    """Handle feedback form submissions"""
     try:
         feedback_data = request.get_json()
         
         # Validate required fields
-        if not feedback_data or 'rating' not in feedback_data:
-            return jsonify({'error': 'Invalid feedback data'}), 400
+        if not feedback_data or not feedback_data.get('message') or not feedback_data.get('category'):
+            return jsonify({'error': 'Message and category are required'}), 400
         
         # Extract feedback information
-        rating = feedback_data.get('rating')
-        comment = feedback_data.get('comment', '').strip()
-        category = feedback_data.get('category', '')
-        prediction = feedback_data.get('prediction', '')
-        confidence = feedback_data.get('confidence', '')
+        name = feedback_data.get('name', 'Anonymous')
+        email = feedback_data.get('email', 'Not provided')
+        category = feedback_data.get('category')
+        message = feedback_data.get('message')
         timestamp = feedback_data.get('timestamp', '')
-        session_id = feedback_data.get('session_id', '')
+        user_agent = feedback_data.get('user_agent', '')
+        page_url = feedback_data.get('page_url', '')
         
-        # Log feedback to console (you can extend this to save to database)
-        print(f"=== USER FEEDBACK ===")
-        print(f"Rating: {rating}")
-        print(f"Prediction: {prediction}")
-        print(f"Confidence: {confidence}")
+        # Log feedback to console
+        print(f"=== FEEDBACK FORM SUBMISSION ===")
+        print(f"Name: {name}")
+        print(f"Email: {email}")
         print(f"Category: {category}")
-        print(f"Comment: {comment}")
-        print(f"Session ID: {session_id}")
+        print(f"Message: {message}")
         print(f"Timestamp: {timestamp}")
-        print("=====================")
+        print(f"User Agent: {user_agent}")
+        print(f"Page URL: {page_url}")
+        print("================================")
         
         # Here you could save to database, send email, etc.
         # For now, we'll just log and return success
         
         return jsonify({
             'status': 'success',
-            'message': 'Feedback received successfully'
+            'message': 'Feedback submitted successfully'
         })
         
     except Exception as e:

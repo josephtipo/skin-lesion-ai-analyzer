@@ -92,60 +92,6 @@
                     </div>
                 </div>
                 
-                <!-- Feedback Section -->
-                <div class="feedback-section" id="feedbackSection">
-                    <div class="feedback-card">
-                        <div class="feedback-header">
-                            <i class="fas fa-comments"></i>
-                            <h4>Help Improve Our AI</h4>
-                        </div>
-                        <div class="feedback-content">
-                            <p>Your feedback helps us make the AI more accurate. Was this analysis helpful?</p>
-                            
-                            <div class="rating-buttons" id="ratingButtons">
-                                <button class="feedback-btn helpful" id="helpfulBtn">
-                                    <i class="fas fa-thumbs-up"></i>
-                                    <span>Helpful</span>
-                                </button>
-                                <button class="feedback-btn not-helpful" id="notHelpfulBtn">
-                                    <i class="fas fa-thumbs-down"></i>
-                                    <span>Not Helpful</span>
-                                </button>
-                            </div>
-                            
-                            <div class="detailed-feedback" id="detailedFeedback" style="display: none;">
-                                <div class="feedback-form">
-                                    <textarea id="feedbackComment" placeholder="Tell us more about your experience (optional)..." rows="3"></textarea>
-                                    <select id="feedbackCategory">
-                                        <option value="">Select feedback category (optional)</option>
-                                        <option value="image_quality">Image quality issue</option>
-                                        <option value="incorrect_prediction">Prediction seems incorrect</option>
-                                        <option value="interface_problem">Interface or usability issue</option>
-                                        <option value="general_suggestion">General suggestion</option>
-                                        <option value="other">Other</option>
-                                    </select>
-                                    <div class="feedback-actions">
-                                        <button class="btn btn-primary" id="submitFeedback">
-                                            <i class="fas fa-paper-plane"></i>
-                                            Submit Feedback
-                                        </button>
-                                        <button class="btn btn-secondary" id="skipFeedback">
-                                            Skip
-                                        </button>
-                                    </div>
-                                </div>
-                            </div>
-                            
-                            <div class="feedback-thanks" id="feedbackThanks" style="display: none;">
-                                <div class="thanks-message">
-                                    <i class="fas fa-heart"></i>
-                                    <h5>Thank you for your feedback!</h5>
-                                    <p>Your input helps us improve the AI for everyone.</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
             </div>
 
             <div class="loading-overlay" id="loadingOverlay" style="display: none;">
@@ -383,6 +329,66 @@
                     </div>
                 </div>
                 
+            </div>
+        </section>
+
+        <section class="feedback-form-section">
+            <div class="feedback-form-card">
+                <div class="feedback-form-header">
+                    <i class="fas fa-comment-dots"></i>
+                    <h3>Share Your Feedback</h3>
+                </div>
+                <div class="feedback-form-content">
+                    <p>Help us improve the Skin Lesion AI Analyzer. Your feedback is valuable to us!</p>
+                    
+                    <form class="contact-form" id="feedbackForm">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="feedbackName">Name (Optional)</label>
+                                <input type="text" id="feedbackName" name="name" placeholder="Your name">
+                            </div>
+                            <div class="form-group">
+                                <label for="feedbackEmail">Email (Optional)</label>
+                                <input type="email" id="feedbackEmail" name="email" placeholder="your.email@example.com">
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="feedbackCategory">Feedback Type</label>
+                            <select id="feedbackCategory" name="category" required>
+                                <option value="">Please select a category</option>
+                                <option value="general_feedback">General Feedback</option>
+                                <option value="feature_request">Feature Request</option>
+                                <option value="bug_report">Bug Report</option>
+                                <option value="user_interface">User Interface</option>
+                                <option value="ai_accuracy">AI Accuracy</option>
+                                <option value="image_quality">Image Quality Guidelines</option>
+                                <option value="other">Other</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="feedbackMessage">Your Message</label>
+                            <textarea id="feedbackMessage" name="message" rows="5" placeholder="Please share your thoughts, suggestions, or report any issues you've encountered..." required></textarea>
+                        </div>
+                        
+                        <div class="form-actions">
+                            <button type="submit" class="btn btn-primary" id="submitFeedbackBtn">
+                                <i class="fas fa-paper-plane"></i>
+                                Send Feedback
+                            </button>
+                        </div>
+                    </form>
+                    
+                    <div class="feedback-success" id="feedbackSuccess" style="display: none;">
+                        <div class="success-message">
+                            <i class="fas fa-check-circle"></i>
+                            <h4>Thank You!</h4>
+                            <p>Your feedback has been sent successfully. We appreciate your input and will use it to improve the Skin Lesion AI Analyzer.</p>
+                            <button class="btn btn-secondary" id="sendAnotherFeedback">Send Another Feedback</button>
+                        </div>
+                    </div>
+                </div>
             </div>
         </section>
 

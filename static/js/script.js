@@ -18,17 +18,6 @@ class SkinLesionAnalyzer {
         this.predictionValue = document.getElementById('predictionValue');
         this.confidenceFill = document.getElementById('confidenceFill');
         this.confidenceText = document.getElementById('confidenceText');
-        
-        // Feedback elements
-        this.feedbackSection = document.getElementById('feedbackSection');
-        this.helpfulBtn = document.getElementById('helpfulBtn');
-        this.notHelpfulBtn = document.getElementById('notHelpfulBtn');
-        this.detailedFeedback = document.getElementById('detailedFeedback');
-        this.feedbackComment = document.getElementById('feedbackComment');
-        this.feedbackCategory = document.getElementById('feedbackCategory');
-        this.submitFeedback = document.getElementById('submitFeedback');
-        this.skipFeedback = document.getElementById('skipFeedback');
-        this.feedbackThanks = document.getElementById('feedbackThanks');
     }
 
     attachEventListeners() {
@@ -50,12 +39,6 @@ class SkinLesionAnalyzer {
         // Button events
         this.changeImageBtn.addEventListener('click', () => this.resetUpload());
         this.analyzeBtn.addEventListener('click', () => this.analyzeImage());
-        
-        // Feedback events
-        this.helpfulBtn.addEventListener('click', () => this.handleFeedbackRating('helpful'));
-        this.notHelpfulBtn.addEventListener('click', () => this.handleFeedbackRating('not-helpful'));
-        this.submitFeedback.addEventListener('click', () => this.submitUserFeedback());
-        this.skipFeedback.addEventListener('click', () => this.skipUserFeedback());
 
         // Prevent default drag behaviors on document
         document.addEventListener('dragover', (e) => e.preventDefault());
@@ -217,94 +200,6 @@ class SkinLesionAnalyzer {
     hideResults() {
         this.resultsSection.style.display = 'none';
         this.resultsSection.classList.remove('show');
-        this.resetFeedback();
-    }
-    
-    resetFeedback() {
-        // Reset feedback form
-        this.helpfulBtn.classList.remove('selected');
-        this.notHelpfulBtn.classList.remove('selected');
-        this.detailedFeedback.style.display = 'none';
-        this.feedbackThanks.style.display = 'none';
-        this.feedbackComment.value = '';
-        this.feedbackCategory.value = '';
-        
-        // Reset rating buttons visibility
-        document.getElementById('ratingButtons').style.display = 'flex';
-    }
-    
-    handleFeedbackRating(rating) {
-        // Update button states
-        this.helpfulBtn.classList.remove('selected');
-        this.notHelpfulBtn.classList.remove('selected');
-        
-        if (rating === 'helpful') {
-            this.helpfulBtn.classList.add('selected');
-        } else {
-            this.notHelpfulBtn.classList.add('selected');
-        }
-        
-        // Store the rating
-        this.currentFeedbackRating = rating;
-        
-        // Show detailed feedback form
-        this.detailedFeedback.style.display = 'block';
-    }
-    
-    async submitUserFeedback() {
-        const feedbackData = {
-            rating: this.currentFeedbackRating,
-            comment: this.feedbackComment.value.trim(),
-            category: this.feedbackCategory.value,
-            prediction: this.predictionValue.textContent,
-            confidence: this.confidenceText.textContent,
-            timestamp: new Date().toISOString(),
-            session_id: this.generateSessionId()
-        };
-        
-        try {
-            const response = await fetch('/feedback', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(feedbackData)
-            });
-            
-            if (response.ok) {
-                this.showFeedbackThanks();
-            } else {
-                console.error('Failed to submit feedback');
-                this.showFeedbackThanks(); // Still show thanks to avoid user confusion
-            }
-        } catch (error) {
-            console.error('Error submitting feedback:', error);
-            this.showFeedbackThanks(); // Still show thanks to avoid user confusion
-        }
-    }
-    
-    skipUserFeedback() {
-        this.showFeedbackThanks();
-    }
-    
-    showFeedbackThanks() {
-        // Hide rating buttons and detailed feedback
-        document.getElementById('ratingButtons').style.display = 'none';
-        this.detailedFeedback.style.display = 'none';
-        
-        // Show thanks message
-        this.feedbackThanks.style.display = 'block';
-        
-        // Auto-hide after 3 seconds
-        setTimeout(() => {
-            this.feedbackThanks.style.display = 'none';
-            document.getElementById('ratingButtons').style.display = 'flex';
-            this.resetFeedback();
-        }, 3000);
-    }
-    
-    generateSessionId() {
-        return 'session_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
     }
 
     showLoading() {
@@ -601,6 +496,9 @@ document.addEventListener('DOMContentLoaded', () => {
     
     // Initialize the main application
     new SkinLesionAnalyzer();
+    
+    // Initialize feedback form
+    new FeedbackForm();
 });
 
 // Add smooth scrolling for all anchor links
@@ -616,6 +514,176 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
         }
     });
 });
+
+// Feedback Form Functionality
+class FeedbackForm {
+    constructor() {
+        this.form = document.getElementById('feedbackForm');
+        this.successDiv = document.getElementById('feedbackSuccess');
+        this.submitBtn = document.getElementById('submitFeedbackBtn');
+        this.sendAnotherBtn = document.getElementById('sendAnotherFeedback');
+        
+        if (this.form) {
+            this.attachEventListeners();
+        }
+    }
+    
+    attachEventListeners() {
+        this.form.addEventListener('submit', (e) => this.handleSubmit(e));
+        if (this.sendAnotherBtn) {
+            this.sendAnotherBtn.addEventListener('click', () => this.resetForm());
+        }
+    }
+    
+    async handleSubmit(e) {
+        e.preventDefault();
+        
+        // Disable submit button and show loading state
+        this.submitBtn.disabled = true;
+        this.submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Sending...';
+        
+        // Get form data
+        const formData = new FormData(this.form);
+        const feedbackData = {
+            name: formData.get('name') || 'Anonymous',
+            email: formData.get('email') || '',
+            category: formData.get('category'),
+            message: formData.get('message'),
+            timestamp: new Date().toISOString(),
+            user_agent: navigator.userAgent,
+            page_url: window.location.href
+        };
+        
+        try {
+            const response = await fetch('/feedback', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(feedbackData)
+            });
+            
+            if (response.ok) {
+                this.showSuccess();
+            } else {
+                throw new Error('Failed to submit feedback');
+            }
+        } catch (error) {
+            console.error('Error submitting feedback:', error);
+            this.showError();
+        } finally {
+            // Reset button state
+            this.submitBtn.disabled = false;
+            this.submitBtn.innerHTML = '<i class="fas fa-paper-plane"></i> Send Feedback';
+        }
+    }
+    
+    showSuccess() {
+        this.form.style.display = 'none';
+        this.successDiv.style.display = 'block';
+        
+        // Scroll to success message
+        this.successDiv.scrollIntoView({
+            behavior: 'smooth',
+            block: 'center'
+        });
+    }
+    
+    showError() {
+        // Create error notification
+        const errorDiv = document.createElement('div');
+        errorDiv.className = 'error-notification';
+        errorDiv.innerHTML = `
+            <div class="error-content">
+                <i class="fas fa-exclamation-circle"></i>
+                <span>Failed to send feedback. Please try again later.</span>
+                <button class="error-close" onclick="this.parentElement.parentElement.remove()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+        `;
+        
+        // Add error styles if not already present
+        if (!document.querySelector('.error-notification-styles')) {
+            const style = document.createElement('style');
+            style.className = 'error-notification-styles';
+            style.textContent = `
+                .error-notification {
+                    position: fixed;
+                    top: 20px;
+                    right: 20px;
+                    background: #fef2f2;
+                    border: 1px solid #fecaca;
+                    border-radius: 8px;
+                    padding: 1rem;
+                    box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1);
+                    z-index: 1001;
+                    animation: slideInRight 0.3s ease-out;
+                    max-width: 400px;
+                }
+                
+                .error-content {
+                    display: flex;
+                    align-items: center;
+                    gap: 0.75rem;
+                    color: #991b1b;
+                }
+                
+                .error-content i:first-child {
+                    color: #dc2626;
+                    flex-shrink: 0;
+                }
+                
+                .error-close {
+                    background: none;
+                    border: none;
+                    color: #991b1b;
+                    cursor: pointer;
+                    padding: 0.25rem;
+                    border-radius: 4px;
+                    margin-left: auto;
+                }
+                
+                .error-close:hover {
+                    background: #fecaca;
+                }
+                
+                @keyframes slideInRight {
+                    from {
+                        transform: translateX(100%);
+                        opacity: 0;
+                    }
+                    to {
+                        transform: translateX(0);
+                        opacity: 1;
+                    }
+                }
+            `;
+            document.head.appendChild(style);
+        }
+        
+        document.body.appendChild(errorDiv);
+        
+        // Auto remove after 5 seconds
+        setTimeout(() => {
+            if (errorDiv.parentElement) {
+                errorDiv.remove();
+            }
+        }, 5000);
+    }
+    
+    resetForm() {
+        this.form.reset();
+        this.form.style.display = 'block';
+        this.successDiv.style.display = 'none';
+        
+        // Scroll to form
+        this.form.scrollIntoView({
+            behavior: 'smooth',
+            block: 'start'
+        });
+    }
+}
 
 // Add intersection observer for animation on scroll
 const observerOptions = {
