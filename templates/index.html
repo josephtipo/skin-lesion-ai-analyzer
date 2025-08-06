@@ -32,7 +32,7 @@
                             <i class="fas fa-cloud-upload-alt upload-icon"></i>
                             <h3>Upload Skin Lesion Image</h3>
                             <p>Drag and drop your image here or click to browse</p>
-                            <p>For the best results, check the FAQ section below for tips and example images.</p>
+                            <p>For the best results, check the image quality guidelines below for tips and example images.</p>
                             <div class="supported-formats">
                                 <span>Supported formats: JPG, JPEG, PNG, HEIC</span>
                             </div>
@@ -156,7 +156,7 @@
                 </div>
                 
                 <div class="quality-samples">
-                    <h4>Sample Quality Examples</h4>
+                    <h4>Image Quality Examples</h4>
                     <div class="sample-grid">
                         <div class="sample-item">
                             <img src="{{ url_for('static', filename='images/ISIC_0024323.jpg') }}" alt="Good quality lesion image example" class="sample-image">
@@ -179,9 +179,9 @@
                             <p class="sample-description">Good color accuracy and lesion detail visibility with proper framing</p>
                         </div>
                         <div class="sample-item">
-                            <img src="{{ url_for('static', filename='images/IMG_9818.heic') }}" alt="Good quality lesion image example" class="sample-image">
+                            <img src="{{ url_for('static', filename='images/IMG_9818.jpg') }}" alt="Good quality lesion image example" class="sample-image">
                             <div class="sample-label good">✓ Excellent Quality</div>
-                            <p class="sample-description">High-quality HEIC format with excellent detail capture and focus</p>
+                            <p class="sample-description">High-quality image with excellent detail capture and focus</p>
                         </div>
                     </div>
                 </div>
@@ -313,46 +313,6 @@
                     </div>
                 </div>
                 
-                <div class="faq-item" id="faq-image-quality">
-                    <div class="faq-question">
-                        <h5>What image quality is recommended?</h5>
-                        <i class="fas fa-chevron-down"></i>
-                    </div>
-                    <div class="faq-answer">
-                        <p>For best results, use clear, well-lit images with the lesion prominently visible. The lesion should fill most of the frame, and the image should be taken from a reasonable distance.</p>
-                        
-                        <div class="sample-images">
-                            <h6>Sample Quality Examples:</h6>
-                            <div class="sample-grid">
-                                <div class="sample-item">
-                                    <img src="{{ url_for('static', filename='images/ISIC_0024323.jpg') }}" alt="Good quality lesion image example" class="sample-image">
-                                    <div class="sample-label good">✓ Good Quality</div>
-                                    <p class="sample-description">Clear, well-focused image with lesion prominently visible</p>
-                                </div>
-                                <div class="sample-item">
-                                    <img src="{{ url_for('static', filename='images/ISIC_0026758.jpg') }}" alt="Good quality lesion image example" class="sample-image">
-                                    <div class="sample-label good">✓ Good Quality</div>
-                                    <p class="sample-description">Proper lighting and contrast, lesion details clearly visible</p>
-                                </div>
-                                <div class="sample-item">
-                                    <img src="{{ url_for('static', filename='images/ISIC_0026480.jpg') }}" alt="Good quality lesion image example" class="sample-image">
-                                    <div class="sample-label good">✓ Good Quality</div>
-                                    <p class="sample-description">Well-lit image with clear lesion boundaries</p>
-                                </div>
-                                <div class="sample-item">
-                                    <img src="{{ url_for('static', filename='images/ISIC_0026738.jpg') }}" alt="Good quality lesion image example" class="sample-image">
-                                    <div class="sample-label good">✓ Good Quality</div>
-                                    <p class="sample-description">Good color accuracy and lesion detail visibility</p>
-                                </div>
-                                <div class="sample-item">
-                                    <img src="{{ url_for('static', filename='images/IMG_9818.heic') }}" alt="Good quality lesion image example" class="sample-image">
-                                    <div class="sample-label good">✓ Good Quality</div>
-                                    <p class="sample-description">High-quality HEIC format with excellent detail capture</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
             </div>
         </section>
 
