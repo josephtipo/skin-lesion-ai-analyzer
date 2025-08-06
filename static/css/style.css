@@ -81,7 +81,7 @@ body {
 }
 
 .logo h1 {
-    font-size: 2.5rem;
+    font-size: 3.75rem;
     font-weight: 700;
     letter-spacing: -0.025em;
 }
@@ -164,6 +164,19 @@ body {
     padding: 0.5rem 1rem;
     border-radius: 6px;
     display: inline-block;
+    line-height: 1.4;
+}
+
+.quality-link {
+    color: var(--primary-color);
+    text-decoration: none;
+    font-weight: 500;
+    transition: var(--transition);
+}
+
+.quality-link:hover {
+    color: var(--primary-dark);
+    text-decoration: underline;
 }
 
 /* Image Preview */
@@ -536,7 +549,7 @@ body {
     }
     
     .logo h1 {
-        font-size: 1.75rem;
+        font-size: 2.625rem;
         text-align: center;
     }
     
@@ -702,7 +715,7 @@ body {
     }
     
     .logo h1 {
-        font-size: 2rem;
+        font-size: 3rem;
     }
     
     .logo i {
@@ -1164,11 +1177,133 @@ input[type="file"]:focus + .upload-area {
     border-radius: 8px;
 }
 
+/* Image Quality Guidelines Section */
+.image-quality-section {
+    background: var(--surface);
+    padding: 3rem;
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow);
+    margin-bottom: 3rem;
+}
+
+.image-quality-section h3 {
+    text-align: center;
+    font-size: 2rem;
+    font-weight: 700;
+    margin-bottom: 2rem;
+    color: var(--text-primary);
+}
+
+.quality-content {
+    max-width: 1000px;
+    margin: 0 auto;
+}
+
+.quality-instructions {
+    margin-bottom: 3rem;
+}
+
+.quality-instructions h4 {
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin-bottom: 1.5rem;
+    color: var(--text-primary);
+    text-align: center;
+}
+
+.instruction-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+}
+
+.instruction-card {
+    background: var(--surface-hover);
+    padding: 1.5rem;
+    border-radius: 8px;
+    text-align: center;
+    border-left: 4px solid var(--primary-color);
+    transition: var(--transition);
+}
+
+.instruction-card:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow);
+}
+
+.instruction-card i {
+    font-size: 2rem;
+    color: var(--primary-color);
+    margin-bottom: 1rem;
+}
+
+.instruction-card h5 {
+    font-size: 1.125rem;
+    font-weight: 600;
+    margin-bottom: 0.75rem;
+    color: var(--text-primary);
+}
+
+.instruction-card p {
+    font-size: 0.875rem;
+    color: var(--text-secondary);
+    line-height: 1.5;
+}
+
+.quality-samples {
+    margin-bottom: 3rem;
+}
+
+.quality-samples h4 {
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin-bottom: 1.5rem;
+    color: var(--text-primary);
+    text-align: center;
+}
+
+.quality-tips {
+    background: var(--surface-hover);
+    padding: 2rem;
+    border-radius: 8px;
+    border-left: 4px solid var(--accent-color);
+}
+
+.quality-tips h4 {
+    font-size: 1.25rem;
+    font-weight: 600;
+    margin-bottom: 1rem;
+    color: var(--text-primary);
+}
+
+.tips-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.tips-list li {
+    padding: 0.75rem 0;
+    border-bottom: 1px solid var(--border);
+    color: var(--text-secondary);
+    line-height: 1.6;
+}
+
+.tips-list li:last-child {
+    border-bottom: none;
+}
+
+.tips-list li strong {
+    color: var(--text-primary);
+}
+
 /* Responsive adjustments for new sections */
 @media (max-width: 768px) {
     .training-progress,
     .faq-section,
-    .medical-disclaimer {
+    .medical-disclaimer,
+    .image-quality-section {
         padding: 2rem 1rem;
     }
     
@@ -1195,8 +1330,22 @@ input[type="file"]:focus + .upload-area {
 @media (max-width: 480px) {
     .training-progress,
     .faq-section,
-    .medical-disclaimer {
+    .medical-disclaimer,
+    .image-quality-section {
         padding: 1.5rem 1rem;
+    }
+    
+    .instruction-grid {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+    }
+    
+    .instruction-card {
+        padding: 1.25rem;
+    }
+    
+    .quality-tips {
+        padding: 1.5rem;
     }
     
     .faq-question {

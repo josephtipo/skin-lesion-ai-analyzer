@@ -126,6 +126,79 @@
             </div>
         </section>
 
+        <section class="image-quality-section">
+            <h3>Image Quality Guidelines</h3>
+            <div class="quality-content">
+                <div class="quality-instructions">
+                    <h4>How to Capture Quality Images</h4>
+                    <div class="instruction-grid">
+                        <div class="instruction-card">
+                            <i class="fas fa-lightbulb"></i>
+                            <h5>Proper Lighting</h5>
+                            <p>Use natural daylight or bright, even artificial lighting. Avoid shadows and harsh direct light that creates glare.</p>
+                        </div>
+                        <div class="instruction-card">
+                            <i class="fas fa-crop-alt"></i>
+                            <h5>Proper Framing</h5>
+                            <p>Fill the frame with the lesion area. Crop out unnecessary features like side shadows, fingers, and background distractions.</p>
+                        </div>
+                        <div class="instruction-card">
+                            <i class="fas fa-focus"></i>
+                            <h5>Sharp Focus</h5>
+                            <p>Ensure the lesion is in sharp focus. Hold the camera steady and tap to focus on the lesion before taking the photo.</p>
+                        </div>
+                        <div class="instruction-card">
+                            <i class="fas fa-ruler"></i>
+                            <h5>Appropriate Distance</h5>
+                            <p>Take the photo from close enough to see details clearly, but not so close that the image becomes blurry or distorted.</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="quality-samples">
+                    <h4>Sample Quality Examples</h4>
+                    <div class="sample-grid">
+                        <div class="sample-item">
+                            <img src="{{ url_for('static', filename='images/ISIC_0024323.jpg') }}" alt="Good quality lesion image example" class="sample-image">
+                            <div class="sample-label good">✓ Excellent Quality</div>
+                            <p class="sample-description">Clear, well-focused image with lesion prominently visible and good lighting</p>
+                        </div>
+                        <div class="sample-item">
+                            <img src="{{ url_for('static', filename='images/ISIC_0026758.jpg') }}" alt="Good quality lesion image example" class="sample-image">
+                            <div class="sample-label good">✓ Excellent Quality</div>
+                            <p class="sample-description">Proper lighting and contrast with lesion details clearly visible</p>
+                        </div>
+                        <div class="sample-item">
+                            <img src="{{ url_for('static', filename='images/ISIC_0026480.jpg') }}" alt="Good quality lesion image example" class="sample-image">
+                            <div class="sample-label good">✓ Excellent Quality</div>
+                            <p class="sample-description">Well-lit image with clear lesion boundaries and minimal background</p>
+                        </div>
+                        <div class="sample-item">
+                            <img src="{{ url_for('static', filename='images/ISIC_0026738.jpg') }}" alt="Good quality lesion image example" class="sample-image">
+                            <div class="sample-label good">✓ Excellent Quality</div>
+                            <p class="sample-description">Good color accuracy and lesion detail visibility with proper framing</p>
+                        </div>
+                        <div class="sample-item">
+                            <img src="{{ url_for('static', filename='images/IMG_9818.heic') }}" alt="Good quality lesion image example" class="sample-image">
+                            <div class="sample-label good">✓ Excellent Quality</div>
+                            <p class="sample-description">High-quality HEIC format with excellent detail capture and focus</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="quality-tips">
+                    <h4>Additional Tips for Better Results</h4>
+                    <ul class="tips-list">
+                        <li><strong>Clean the area:</strong> Gently clean the skin around the lesion to remove any oils, creams, or debris that might affect image quality.</li>
+                        <li><strong>Avoid flash:</strong> Use natural or ambient lighting instead of camera flash, which can cause glare and wash out important details.</li>
+                        <li><strong>Multiple angles:</strong> If possible, take photos from slightly different angles to capture all aspects of the lesion.</li>
+                        <li><strong>Steady hands:</strong> Use both hands to hold your device steady, or rest your elbows on a surface for stability.</li>
+                        <li><strong>Check before uploading:</strong> Review your photo to ensure it's clear, well-lit, and the lesion is easily visible before analysis.</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
         <section class="info-section">
             <div class="info-grid">
                 <div class="info-card">
@@ -270,6 +343,11 @@
                                     <img src="{{ url_for('static', filename='images/ISIC_0026738.jpg') }}" alt="Good quality lesion image example" class="sample-image">
                                     <div class="sample-label good">✓ Good Quality</div>
                                     <p class="sample-description">Good color accuracy and lesion detail visibility</p>
+                                </div>
+                                <div class="sample-item">
+                                    <img src="{{ url_for('static', filename='images/IMG_9818.heic') }}" alt="Good quality lesion image example" class="sample-image">
+                                    <div class="sample-label good">✓ Good Quality</div>
+                                    <p class="sample-description">High-quality HEIC format with excellent detail capture</p>
                                 </div>
                             </div>
                         </div>
