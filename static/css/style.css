@@ -1260,6 +1260,23 @@ input[type="file"]:focus + .upload-area {
     margin: 0;
 }
 
+.collaboration-list {
+    list-style: none;
+    padding: 0;
+    margin: 1rem 0;
+}
+
+.collaboration-list li {
+    padding: 0.5rem 0;
+    color: var(--text-secondary);
+    line-height: 1.6;
+    border-left: 3px solid var(--primary-color);
+    padding-left: 1rem;
+    margin-bottom: 0.5rem;
+    background: var(--surface-hover);
+    border-radius: 4px;
+}
+
 /* Medical Disclaimer Section */
 .medical-disclaimer {
     background: linear-gradient(135deg, #fee2e2 0%, #fecaca 100%);
